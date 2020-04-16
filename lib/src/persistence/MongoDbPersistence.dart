@@ -207,28 +207,28 @@ class MongoDbPersistence
   ///
   /// - value     an object in internal format to convert.
   /// Returns converted object in public format.
-  dynamic convertToPublic(value) {
-    if (value != null) {
-      if (value._id != null) {
-        value.id = value._id;
-        value.remove('_id');
+  Map<String, dynamic> convertToPublic(Map<String, dynamic> item) {
+    if (item != null) {
+      if (item['_id'] != null) {
+        item['id'] = item['_id'];
+        item.remove('_id');
       }
     }
-    return value;
+    return item;
   }
 
   /// Convert object value from public to internal format.
   ///
   /// - [value]     an object in public format to convert.
   /// Returns converted object in internal format.
-  dynamic convertFromPublic(value) {
-    if (value != null) {
-      if (value.id != null) {
-        value._id = value._id ?? value.id;
-        value.remove['id'];
+  Map<String, dynamic> convertFromPublic(Map<String, dynamic> item) {
+    if (item != null) {
+      if (item['id'] != null) {
+        item['_id'] = item['_id'] ?? item['id'];
+        item.remove('id');
       }
     }
-    return value;
+    return item;
   }
 
   /// Checks if the component is opened.
