@@ -107,7 +107,7 @@ class MongoDbPersistence
 
   ConfigParams _config;
   IReferences _references;
-  bool _opened;
+  bool _opened = false;
   bool _localConnection;
   final _indexes = <MongoDbIndex>[];
 
@@ -198,9 +198,17 @@ class MongoDbPersistence
   /// Adds index definition to create it on opening
   /// - [keys] index keys (fields)
   /// - [options] index options
-  void ensureIndex(keys, [options]) {
+  void ensureIndex(keys,
+      {String key,
+      bool unique = false,
+      bool sparse = false,
+      bool background = false,
+      bool dropDups = false,
+      Map<String, dynamic> partialFilterExpression,
+      String name}) {
     if (keys == null) return;
-    _indexes.add(MongoDbIndex(keys, options));
+    _indexes.add(MongoDbIndex(keys, key, unique, sparse, background, dropDups,
+        partialFilterExpression, name));
   }
 
   /// Converts object value from internal to public format.
@@ -288,34 +296,34 @@ class MongoDbPersistence
     try {
       // Recreate indexes
       for (var index in _indexes) {
-        var keys = await client.createIndex(collectionName,
-            keys: index.keys,
-            unique: index.unique,
-            sparse: index.sparse,
-            background: index.background,
-            dropDups: index.dropDups,
-            partialFilterExpression: index.partialFilterExpression,
-            name: index.name);
+        //TODO: Need fix work with indexes!
+        var keys = {};
+        //  var keys = await client.createIndex(collectionName,
+        //      keys: index.keys,
+        //     unique: index.unique,
+        //     sparse: index.sparse,
+        //     background: index.background,
+        //     dropDups: index.dropDups,
+        //     partialFilterExpression: index.partialFilterExpression,
+        //     name: index.name
+        // );
 
         var indexName = keys['name'] ?? index.keys.keys.join(',');
         logger.debug(correlationId, 'Created index %s for collection %s',
             [indexName, collectionName]);
       }
     } catch (err) {
-      if (err != null) {
-        client = null;
-        throw ConnectionException(
-                correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')
-            .withCause(err);
-      } else {
-        _opened = true;
-        collection = coll;
-        logger.debug(
-            correlationId,
-            'Connected to mongodb database %s, collection %s',
-            [databaseName, collectionName]);
-      }
+      client = null;
+      throw ConnectionException(
+              correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')
+          .withCause(err);
     }
+    _opened = true;
+    collection = coll;
+    logger.debug(
+        correlationId,
+        'Connected to mongodb database %s, collection %s',
+        [databaseName, collectionName]);
   }
 
   /// Closes component and frees used resources.
@@ -353,19 +361,8 @@ class MongoDbPersistence
       throw Exception('Collection name is not defined');
     }
 
-    // this.client.dropCollection(this.collectionName, (err) => {
-    //     if (err && (err.message != 'ns not found' || err.message != 'topology was destroyed'))
-    //         err = null;
-
-    //     if (err) {
-    //         err = new ConnectionException(correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')
-    //             .withCause(err);
-    //     }
-
-    //     if (callback) callback(err);
-    // });
     try {
-      await collection.remove({});
+      await collection.remove(<String, String>{});
     } catch (err) {
       throw ConnectionException(
               correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')

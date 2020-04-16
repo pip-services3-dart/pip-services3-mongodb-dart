@@ -1,29 +1,29 @@
-// import { FilterParams } from 'pip-services3-commons-node';
-// import { PagingParams } from 'pip-services3-commons-node';
-// import { DataPage } from 'pip-services3-commons-node';
+import 'dart:async';
+import 'package:pip_services3_commons/pip_services3_commons.dart';
 
-// import { IdentifiableMongoDbPersistence } from '../../src/persistence/IdentifiableMongoDbPersistence';
-// import { Dummy } from '../fixtures/Dummy';
-// import { IDummyPersistence } from '../fixtures/IDummyPersistence';
+import 'package:pip_services3_mongodb/pip_services3_mongodb.dart';
+import '../fixtures/Dummy.dart';
+import '../fixtures/IDummyPersistence.dart';
 
-// export class DummyMongoDbPersistence 
-//     extends IdentifiableMongoDbPersistence<Dummy, string> 
-//     implements IDummyPersistence
-// {
-//     public constructor() {
-//         super('dummies');
-//         this.ensureIndex({ key: 1 });
-//     }
+class DummyMongoDbPersistence
+    extends IdentifiableMongoDbPersistence<Dummy, String>
+    implements IDummyPersistence {
+  DummyMongoDbPersistence() : super('dummies') {
+    ensureIndex({'key': 1}, unique: true);
+  }
 
-//     public getPageByFilter(String correlationId, filter: FilterParams, paging: PagingParams, 
-//         callback: (err: any, page: DataPage<Dummy>) => void): void {
-//         filter = filter || new FilterParams();
-//         let key = filter.getAsNullableString('key');
+  @override
+  Future<DataPage<Dummy>> getPageByFilter(
+      String correlationId, FilterParams filter, PagingParams paging) async {
+    filter = filter ?? FilterParams();
+    var key = filter.getAsNullableString('key');
 
-//         let filterCondition: any = {};
-//         if (key != null)
-//             filterCondition['key'] = key;
+    var filterCondition = {};
+    if (key != null) {
+      filterCondition['key'] = key;
+    }
 
-//         super.getPageByFilter(correlationId, filterCondition, paging, null, null, callback);
-//     }
-// }
+    return super
+        .getPageByFilterEx(correlationId, filterCondition, paging, null);
+  }
+}

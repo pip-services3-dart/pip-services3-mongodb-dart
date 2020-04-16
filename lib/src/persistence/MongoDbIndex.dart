@@ -4,6 +4,7 @@ class MongoDbIndex {
   Map<String, dynamic> keys;
 
   /// Index options
+  String key;
   bool unique;
   bool sparse;
   bool background;
@@ -11,11 +12,6 @@ class MongoDbIndex {
   Map<String, dynamic> partialFilterExpression;
   String name;
 
-  MongoDbIndex(this.keys,
-      [this.unique,
-      this.sparse,
-      this.background,
-      this.dropDups,
-      this.partialFilterExpression,
-      this.name]);
+  MongoDbIndex(this.keys, this.key, this.unique, this.sparse, this.background,
+      this.dropDups, this.partialFilterExpression, this.name);
 }

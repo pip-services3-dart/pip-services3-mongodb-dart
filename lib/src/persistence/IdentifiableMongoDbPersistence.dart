@@ -186,7 +186,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [sort]             (optional) sorting JSON object
   /// Return         Future that receives a data list or error.
 
-  Future<List<T>> getListByFilter(String correlationId, filter, sort) async {
+  Future<List<T>> getListByFilterEx(String correlationId, filter, sort) async {
     // Configure options
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
@@ -215,7 +215,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     var filter = {
       '_id': {r'$in': ids}
     };
-    return getListByFilter(correlationId, filter, null);
+    return getListByFilterEx(correlationId, filter, null);
   }
 
   /// Gets a data item by its unique id.

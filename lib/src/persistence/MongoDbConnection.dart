@@ -155,7 +155,6 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
   /// Throws error
   @override
   Future open(String correlationId) async {
-
     String uri;
     try {
       uri = await connectionResolver.resolve(correlationId);

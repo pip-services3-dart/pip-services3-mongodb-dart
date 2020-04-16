@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:test/test.dart';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
-import 'package:pip_services3_mongodb/pip_services3_mongodb.dart';
+import '../fixtures/DummyPersistenceFixture.dart';
+import './DummyMongoDbPersistence.dart';
 
 void main() {
-  group('MongoDbConnection', () {
-    MongoDbConnection connection;
+  group('DummyMongoDbPersistence', () {
+    DummyMongoDbPersistence persistence;
+    DummyPersistenceFixture fixture;
 
     var mongoUri = Platform.environment['MONGO_URI'];
     var mongoHost = Platform.environment['MONGO_HOST'] ?? 'localhost';
@@ -27,19 +29,23 @@ void main() {
         mongoDatabase
       ]);
 
-      connection = MongoDbConnection();
-      connection.configure(dbConfig);
-
-      await connection.open(null);
+      persistence = DummyMongoDbPersistence();
+      persistence.configure(dbConfig);
+      fixture = DummyPersistenceFixture(persistence);
+      await persistence.open(null);
+      await persistence.clear(null);
     });
 
     tearDown(() async {
-      await connection.close(null);
+      await persistence.close(null);
     });
 
-    test('Open and Close', () {
-      expect(connection.getConnection(), isNotNull);
-      expect(connection.getDatabaseName(), isNotNull);
+    test('Crud Operations', () {
+      fixture.testCrudOperations();
+    });
+
+    test('Batch Operations', () {
+      fixture.testBatchOperations();
     });
   });
 }

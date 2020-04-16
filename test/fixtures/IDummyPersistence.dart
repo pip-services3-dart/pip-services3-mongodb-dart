@@ -1,20 +1,26 @@
-// import { FilterParams } from 'pip-services3-commons-node';
-// import { PagingParams } from 'pip-services3-commons-node';
-// import { DataPage } from 'pip-services3-commons-node';
-// import { AnyValueMap } from 'pip-services3-commons-node';
+import 'dart:async';
+import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:pip_services3_data/pip_services3_data.dart';
+import './Dummy.dart';
 
-// import { IGetter } from 'pip-services3-data-node';
-// import { IWriter } from 'pip-services3-data-node';
-// import { IPartialUpdater } from 'pip-services3-data-node';
-// import { Dummy } from './Dummy';
-
-// export interface IDummyPersistence extends IGetter<Dummy, String>, IWriter<Dummy, String>, IPartialUpdater<Dummy, String> {
-//     getPageByFilter(String correlationId, filter: FilterParams, paging: PagingParams, callback: (err: any, page: DataPage<Dummy>) => void): void;
-//     getListByIds(String correlationId, ids: string[], callback: (err: any, items: Dummy[]) => void): void;
-//     getOneById(String correlationId, id: string, callback: (err: any, item: Dummy) => void): void;
-//     create(String correlationId, item: Dummy, callback: (err: any, item: Dummy) => void): void;
-//     update(String correlationId, item: Dummy, callback: (err: any, item: Dummy) => void): void;
-//     updatePartially(String correlationId, id: string, data: AnyValueMap, callback: (err: any, item: Dummy) => void): void;
-//     deleteById(String correlationId, id: string, callback: (err: any, item: Dummy) => void): void;
-//     deleteByIds(String correlationId, id: string[], callback: (err: any) => void): void;
-// }
+abstract class IDummyPersistence
+    implements
+        IGetter<Dummy, String>,
+        IWriter<Dummy, String>,
+        IPartialUpdater<Dummy, String> {
+  Future<DataPage<Dummy>> getPageByFilter(
+      String correlationId, FilterParams filter, PagingParams paging);
+  Future<List<Dummy>> getListByIds(String correlationId, List<String> ids);
+  @override
+  Future<Dummy> getOneById(String correlationId, String id);
+  @override
+  Future<Dummy> create(String correlationId, Dummy item);
+  @override
+  Future<Dummy> update(String correlationId, Dummy item);
+  @override
+  Future<Dummy> updatePartially(
+      String correlationId, String id, AnyValueMap data);
+  @override
+  Future<Dummy> deleteById(String correlationId, String id);
+  Future deleteByIds(String correlationId, List<String> id);
+}
