@@ -1,209 +1,199 @@
-// /** @module connect */
-// /** @hidden */
-// let async = require('async');
+import 'dart:async';
 
-// import { IReferenceable } from 'pip-services3-commons-node';
-// import { IReferences } from 'pip-services3-commons-node';
-// import { IConfigurable } from 'pip-services3-commons-node';
-// import { ConfigParams } from 'pip-services3-commons-node';
-// import { ConfigException } from 'pip-services3-commons-node';
-// import { ConnectionResolver } from 'pip-services3-components-node';
-// import { CredentialResolver } from 'pip-services3-components-node';
-// import { ConnectionParams } from 'pip-services3-components-node';
-// import { CredentialParams } from 'pip-services3-components-node';
+import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:pip_services3_components/pip_services3_components.dart';
 
-// /**
-//  * Helper class that resolves MongoDB connection and credential parameters,
-//  * validates them and generates a connection URI.
-//  * 
-//  * It is able to process multiple connections to MongoDB cluster nodes.
-//  * 
-//  *  ### Configuration parameters ###
-//  * 
-//  * - connection(s):
-//  *   - discovery_key:               (optional) a key to retrieve the connection from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]]
-//  *   - host:                        host name or IP address
-//  *   - port:                        port number (default: 27017)
-//  *   - database:                    database name
-//  *   - uri:                         resource URI or connection string with all parameters in it
-//  * - credential(s):
-//  *   - store_key:                   (optional) a key to retrieve the credentials from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/auth.icredentialstore.html ICredentialStore]]
-//  *   - username:                    user name
-//  *   - password:                    user password
-//  * 
-//  * ### References ###
-//  * 
-//  * - <code>\*:discovery:\*:\*:1.0</code>             (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]] services
-//  * - <code>\*:credential-store:\*:\*:1.0</code>      (optional) Credential stores to resolve credentials
-//  */
-// export class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
-//     /** 
-//      * The connections resolver.
-//      */
-//     protected _connectionResolver: ConnectionResolver = new ConnectionResolver();
-//     /** 
-//      * The credentials resolver.
-//      */
-//     protected _credentialResolver: CredentialResolver = new CredentialResolver();
+/// Helper class that resolves MongoDB connection and credential parameters,
+/// validates them and generates a connection URI.
+///
+/// It is able to process multiple connections to MongoDB cluster nodes.
+///
+///  ### Configuration parameters ###
+///
+/// - [connection](s):
+///   - [discovery_key]:               (optional) a key to retrieve the connection from [IDiscovery]
+///   - [host]:                        host name or IP address
+///   - [port]:                        port number (default: 27017)
+///   - [database]:                    database name
+///   - [uri]:                         resource URI or connection string with all parameters in it
+/// - [credential](s):
+///   - [store_key]:                   (optional) a key to retrieve the credentials from [ICredentialStore]
+///   - [username]:                    user name
+///   - [password]:                    user password
+///
+/// ### References ###
+///
+/// - \*:discovery:\*:\*:1.0             (optional) [IDiscovery] services
+/// - \*:credential-store:\*:\*:1.0      (optional) Credential stores to resolve credentials
 
-//     /**
-//      * Configures component by passing configuration parameters.
-//      * 
-//      * @param config    configuration parameters to be set.
-//      */
-//     public configure(config: ConfigParams): void {
-//         this._connectionResolver.configure(config);
-//         this._credentialResolver.configure(config);
-//     }
+class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
+  /// The connections resolver.
 
-//     /**
-// 	 * Sets references to dependent components.
-// 	 * 
-// 	 * @param references 	references to locate the component dependencies. 
-//      */
-//     public setReferences(references: IReferences): void {
-//         this._connectionResolver.setReferences(references);
-//         this._credentialResolver.setReferences(references);
-//     }
-    
-//     private validateConnection(correlationId: string, connection: ConnectionParams): any {
-//         let uri = connection.getUri();
-//         if (uri != null) return null;
+  ConnectionResolver connectionResolver = ConnectionResolver();
 
-//         let host = connection.getHost();
-//         if (host == null)
-//             return new ConfigException(correlationId, "NO_HOST", "Connection host is not set");
+  /// The credentials resolver.
 
-//         let port = connection.getPort();
-//         if (port == 0)
-//             return new ConfigException(correlationId, "NO_PORT", "Connection port is not set");
+  CredentialResolver credentialResolver = CredentialResolver();
 
-//         let database = connection.getAsNullableString("database");
-//         if (database == null)
-//             return new ConfigException(correlationId, "NO_DATABASE", "Connection database is not set");
+  /// Configures component by passing configuration parameters.
+  ///
+  /// - [config]    configuration parameters to be set.
+  @override
+  void configure(ConfigParams config) {
+    connectionResolver.configure(config);
+    credentialResolver.configure(config);
+  }
 
-//         return null;
-//     }
+  /// Sets references to dependent components.
+  ///
+  /// - [references] 	references to locate the component dependencies.
+  @override
+  void setReferences(IReferences references) {
+    connectionResolver.setReferences(references);
+    credentialResolver.setReferences(references);
+  }
 
-//     private validateConnections(correlationId: string, connections: ConnectionParams[]): any {
-//         if (connections == null || connections.length == 0)
-//             return new ConfigException(correlationId, "NO_CONNECTION", "Database connection is not set");
+  dynamic _validateConnection(
+      String correlationId, ConnectionParams connection) {
+    var uri = connection.getUri();
+    if (uri != null) return null;
 
-//         for (let connection of connections) {
-//             let error = this.validateConnection(correlationId, connection);
-//             if (error) return error;
-//         }
+    var host = connection.getHost();
+    if (host == null) {
+      return ConfigException(
+          correlationId, 'NO_HOST', 'Connection host is not set');
+    }
 
-//         return null;
-//     }
+    var port = connection.getPort();
+    if (port == 0) {
+      return ConfigException(
+          correlationId, 'NO_PORT', 'Connection port is not set');
+    }
 
-//     private composeUri(connections: ConnectionParams[], credential: CredentialParams): string {
-//         // If there is a uri then return it immediately
-//         for (let connection of connections) {
-//             let uri = connection.getUri();
-//             if (uri) return uri;
-//         }
+    var database = connection.getAsNullableString('database');
+    if (database == null) {
+      return ConfigException(
+          correlationId, 'NO_DATABASE', 'Connection database is not set');
+    }
 
-//         // Define hosts
-//         let hosts = '';
-//         for (let connection of connections) {
-//             let host = connection.getHost();
-//             let port = connection.getPort();
+    return null;
+  }
 
-//             if (hosts.length > 0)
-//                 hosts += ',';
-//             hosts += host + (port == null ? '' : ':' + port);
-//         }
+  dynamic _validateConnections(
+      String correlationId, List<ConnectionParams> connections) {
+    if (connections == null || connections.isEmpty) {
+      return ConfigException(
+          correlationId, 'NO_CONNECTION', 'Database connection is not set');
+    }
 
-//         // Define database
-//         let database = '';
-//         for (let connection of connections) {
-//             database = database || connection.getAsNullableString("database");
-//         }
-//         if (database.length > 0)
-//             database = '/' + database;
+    for (var connection in connections) {
+      var error = _validateConnection(correlationId, connection);
+      if (error != null) return error;
+    }
 
-//         // Define authentication part
-//         let auth = '';
-//         if (credential) {
-//             let username = credential.getUsername();
-//             if (username) {
-//                 let password = credential.getPassword();
-//                 if (password)
-//                     auth = username + ':' + password + '@';
-//                 else
-//                     auth = username + '@';
-//             }
-//         }
+    return null;
+  }
 
-//         // Define additional parameters parameters
-//         let options = ConfigParams.mergeConfigs(...connections).override(credential);
-//         options.remove('uri');
-//         options.remove('host');
-//         options.remove('port');
-//         options.remove('database');
-//         options.remove('username');
-//         options.remove('password');
-//         let params = '';
-//         let keys = options.getKeys();
-//         for (let key of keys) {
-//             if (params.length > 0)
-//                 params += '&';
+  String _composeUri(
+      List<ConnectionParams> connections, CredentialParams credential) {
+    // If there is a uri then return it immediately
+    for (var connection in connections) {
+      var uri = connection.getUri();
+      if (uri != null) return uri;
+    }
 
-//             params += key;
+    // Define hosts
+    var hosts = '';
+    for (var connection in connections) {
+      var host = connection.getHost();
+      var port = connection.getPort();
 
-//             let value = options.getAsString(key);
-//             if (value != null)
-//                 params += '=' + value;
-//         }
-//         if (params.length > 0)
-//             params = '?' + params;
+      if (hosts.isNotEmpty) {
+        hosts += ',';
+      }
+      hosts += host + (port == null ? '' : ':' + port.toString());
+    }
 
-//         // Compose uri
-//         let uri = "mongodb://" + auth + hosts + database + params;
+    // Define database
+    var database;
+    for (var connection in connections) {
+      database = database ?? connection.getAsNullableString('database');
+    }
+    if (database.isNotEmpty) {
+      database = '/' + database;
+    }
 
-//         return uri;
-//     }
+    // Define authentication part
+    var auth = '';
+    if (credential != null) {
+      var username = credential.getUsername();
+      if (username != null) {
+        var password = credential.getPassword();
+        if (password != null) {
+          auth = username + ':' + password + '@';
+        } else {
+          auth = username + '@';
+        }
+      }
+    }
 
-//     /**
-//      * Resolves MongoDB connection URI from connection and credential parameters.
-//      * 
-//      * @param correlationId     (optional) transaction id to trace execution through call chain.
-//      * @param callback 			callback function that receives resolved URI or error.
-//      */
-//     public resolve(correlationId: string, callback: (err: any, uri: string) => void): void {
-//         let connections: ConnectionParams[];
-//         let credential: CredentialParams;
+    // Define additional parameters parameters
+    var options = ConfigParams.mergeConfigs(connections).override(credential);
+    options.remove('uri');
+    options.remove('host');
+    options.remove('port');
+    options.remove('database');
+    options.remove('username');
+    options.remove('password');
+    var params = '';
+    var keys = options.getKeys();
+    for (var key in keys) {
+      if (params.isNotEmpty) {
+        params += '&';
+      }
 
-//         async.parallel([
-//             (callback) => {
-//                 this._connectionResolver.resolveAll(correlationId, (err: any, result: ConnectionParams[]) => {
-//                     connections = result;
+      params += key;
 
-//                     // Validate connections
-//                     if (err == null)
-//                         err = this.validateConnections(correlationId, connections);
+      var value = options.getAsString(key);
+      if (value != null) {
+        params += '=' + value;
+      }
+    }
+    if (params.isNotEmpty) {
+      params = '?' + params;
+    }
 
-//                     callback(err);
-//                 });
-//             },
-//             (callback) => {
-//                 this._credentialResolver.lookup(correlationId, (err: any, result: CredentialParams) => {
-//                     credential = result;
+    // Compose uri
+    var uri = 'mongodb://' + auth + hosts + database + params;
 
-//                     // Credentials are not validated right now
+    return uri;
+  }
 
-//                     callback(err);
-//                 });
-//             }
-//         ], (err) => {
-//             if (err)
-//                 callback(err, null);
-//             else {
-//                 let uri = this.composeUri(connections, credential);
-//                 callback(null, uri);
-//             }
-//         });
-//     }
+  /// Resolves MongoDB connection URI from connection and credential parameters.
+  ///
+  /// - correlationId     (optional) transaction id to trace execution through call chain.
+  /// Return 			Future that receives resolved URI
+  /// Throw error.
+  Future<String> resolve(String correlationId) async {
+    List<ConnectionParams> connections;
+    CredentialParams credential;
 
-// }
+    Future<dynamic> Function() resolv = () async {
+      connections = await connectionResolver.resolveAll(correlationId);
+      // Validate connections
+      var err = _validateConnections(correlationId, connections);
+      if (err != null) {
+        throw err;
+      }
+    };
+
+    Future<dynamic> Function() lookup = () async {
+      credential = await credentialResolver.lookup(correlationId);
+      // Credentials are not validated right now
+    };
+
+    return await Future.wait([resolv(), lookup()]).then((list) {
+      return _composeUri(connections, credential);
+    });
+  }
+}

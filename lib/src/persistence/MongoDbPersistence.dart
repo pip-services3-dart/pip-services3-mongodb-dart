@@ -1,422 +1,375 @@
-// /** @module persistence */
+import 'dart:async';
 
-// let _ = require('lodash');
-// let async = require('async');
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
+import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:pip_services3_components/pip_services3_components.dart';
 
-// import { IReferenceable } from 'pip-services3-commons-node';
-// import { IUnreferenceable } from 'pip-services3-commons-node';
-// import { IReferences } from 'pip-services3-commons-node';
-// import { IConfigurable } from 'pip-services3-commons-node';
-// import { IOpenable } from 'pip-services3-commons-node';
-// import { ICleanable } from 'pip-services3-commons-node';
-// import { ConfigParams } from 'pip-services3-commons-node';
-// import { ConnectionException } from 'pip-services3-commons-node';
-// import { InvalidStateException } from 'pip-services3-commons-node';
-// import { DependencyResolver } from 'pip-services3-commons-node';
-// import { CompositeLogger } from 'pip-services3-components-node';
+import '../connect/MongoDbConnectionResolver.dart';
+import './MongoDbConnection.dart';
+import './MongoDbIndex.dart';
 
-// import { MongoDbConnectionResolver } from '../connect/MongoDbConnectionResolver';
-// import { MongoDbConnection } from './MongoDbConnection';
-// import { MongoDbIndex } from './MongoDbIndex';
+/// Abstract persistence component that stores data in MongoDB using plain driver.
+///
+/// This is the most basic persistence component that is only
+/// able to store data items of any type. Specific CRUD operations
+/// over the data items must be implemented in child classes by
+/// accessing this.client or this.collection properties.
+///
+/// ### Configuration parameters ###
+///
+/// - [collection]:                  (optional) MongoDB collection name
+/// - [connection](s):
+///   - [discovery_key]:             (optional) a key to retrieve the connection from [connect.idiscovery.html IDiscovery]]
+///   - [host]:                      host name or IP address
+///   - [port]:                      port number (default: 27017)
+///   - [uri]:                       resource URI or connection string with all parameters in it
+/// - [credential](s):
+///   - [store_key]:                 (optional) a key to retrieve the credentials from [auth.icredentialstore.html ICredentialStore]]
+///   - [username]:                  (optional) user name
+///   - [password]:                  (optional) user password
+/// - [options]:
+///   - [max_pool_size]:             (optional) maximum connection pool size (default: 2)
+///   - [keep_alive]:                (optional) enable connection keep alive (default: true)
+///   - [connect_timeout]:           (optional) connection timeout in milliseconds (default: 5000)
+///   - [socket_timeout]:            (optional) socket timeout in milliseconds (default: 360000)
+///   - [auto_reconnect]:            (optional) enable auto reconnection (default: true)
+///   - [reconnect_interval]:        (optional) reconnection interval in milliseconds (default: 1000)
+///   - [max_page_size]:             (optional) maximum page size (default: 100)
+///   - [replica_set]:               (optional) name of replica set
+///   - [ssl]:                       (optional) enable SSL connection (default: false)
+///   - [auth_source]:               (optional) authentication source
+///   - [debug]:                     (optional) enable debug output (default: false).
+///
+/// ### References ###
+///
+/// - \*:logger:\*:\*:1.0           (optional) [ILogger] components to pass log messages
+/// - \*:discovery:\*:\*:1.0        (optional) [IDiscovery] services
+/// - \*:credential-store:\*:\*:1.0 (optional) Credential stores to resolve credentials
+///
+/// ### Example ###
+///
+///     class MyMongoDbPersistence extends MongoDbPersistence<MyData> {
+///
+///       public constructor() {
+///           base('mydata');
+///       }
+///
+///       public getByName(String correlationId, name: string, callback: (err, item) => void): void {
+///         var criteria = { name: name };
+///         this._model.findOne(criteria, callback);
+///       });
+///
+///       public set(correlatonId: string, item: MyData, callback: (err) => void): void {
+///         var criteria = { name: item.name };
+///         var options = { upsert: true, new: true };
+///         this._model.findOneAndUpdate(criteria, item, options, callback);
+///       }
+///
+///     }
+///
+///     var persistence = new MyMongoDbPersistence();
+///     persistence.configure(ConfigParams.fromTuples(
+///         'host', 'localhost',
+///         'port', 27017
+///     ));
+///
+///     persitence.open('123', (err) => {
+///          ...
+///     });
+///
+///     persistence.set('123', { name: 'ABC' }, (err) => {
+///         persistence.getByName('123', 'ABC', (err, item) => {
+///             console.log(item);                   // Result: { name: 'ABC' }
+///         });
+///     });
 
-// /**
-//  * Abstract persistence component that stores data in MongoDB using plain driver.
-//  * 
-//  * This is the most basic persistence component that is only
-//  * able to store data items of any type. Specific CRUD operations
-//  * over the data items must be implemented in child classes by
-//  * accessing <code>this._db</code> or <code>this._collection</code> properties.
-//  * 
-//  * ### Configuration parameters ###
-//  * 
-//  * - collection:                  (optional) MongoDB collection name
-//  * - connection(s):    
-//  *   - discovery_key:             (optional) a key to retrieve the connection from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]]
-//  *   - host:                      host name or IP address
-//  *   - port:                      port number (default: 27017)
-//  *   - uri:                       resource URI or connection string with all parameters in it
-//  * - credential(s):    
-//  *   - store_key:                 (optional) a key to retrieve the credentials from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/auth.icredentialstore.html ICredentialStore]]
-//  *   - username:                  (optional) user name
-//  *   - password:                  (optional) user password
-//  * - options:
-//  *   - max_pool_size:             (optional) maximum connection pool size (default: 2)
-//  *   - keep_alive:                (optional) enable connection keep alive (default: true)
-//  *   - connect_timeout:           (optional) connection timeout in milliseconds (default: 5000)
-//  *   - socket_timeout:            (optional) socket timeout in milliseconds (default: 360000)
-//  *   - auto_reconnect:            (optional) enable auto reconnection (default: true)
-//  *   - reconnect_interval:        (optional) reconnection interval in milliseconds (default: 1000)
-//  *   - max_page_size:             (optional) maximum page size (default: 100)
-//  *   - replica_set:               (optional) name of replica set
-//  *   - ssl:                       (optional) enable SSL connection (default: false)
-//  *   - auth_source:               (optional) authentication source
-//  *   - debug:                     (optional) enable debug output (default: false).
-//  * 
-//  * ### References ###
-//  * 
-//  * - <code>\*:logger:\*:\*:1.0</code>           (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/log.ilogger.html ILogger]] components to pass log messages
-//  * - <code>\*:discovery:\*:\*:1.0</code>        (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]] services
-//  * - <code>\*:credential-store:\*:\*:1.0</code> (optional) Credential stores to resolve credentials
-//  * 
-//  * ### Example ###
-//  * 
-//  *     class MyMongoDbPersistence extends MongoDbPersistence<MyData> {
-//  *    
-//  *       public constructor() {
-//  *           base("mydata");
-//  *       }
-//  * 
-//  *       public getByName(correlationId: string, name: string, callback: (err, item) => void): void {
-//  *         let criteria = { name: name };
-//  *         this._model.findOne(criteria, callback);
-//  *       }); 
-//  * 
-//  *       public set(correlatonId: string, item: MyData, callback: (err) => void): void {
-//  *         let criteria = { name: item.name };
-//  *         let options = { upsert: true, new: true };
-//  *         this._model.findOneAndUpdate(criteria, item, options, callback);
-//  *       }
-//  * 
-//  *     }
-//  * 
-//  *     let persistence = new MyMongoDbPersistence();
-//  *     persistence.configure(ConfigParams.fromTuples(
-//  *         "host", "localhost",
-//  *         "port", 27017
-//  *     ));
-//  * 
-//  *     persitence.open("123", (err) => {
-//  *          ...
-//  *     });
-//  * 
-//  *     persistence.set("123", { name: "ABC" }, (err) => {
-//  *         persistence.getByName("123", "ABC", (err, item) => {
-//  *             console.log(item);                   // Result: { name: "ABC" }
-//  *         });
-//  *     });
-//  */
-// export class MongoDbPersistence implements IReferenceable, IUnreferenceable, IConfigurable, IOpenable, ICleanable {
+class MongoDbPersistence
+    implements
+        IReferenceable,
+        IUnreferenceable,
+        IConfigurable,
+        IOpenable,
+        ICleanable {
+  static final _defaultConfig = ConfigParams.fromTuples([
+    'collection', null,
+    'dependencies.connection', '*:connection:mongodb:*:1.0',
 
-//     private static _defaultConfig: ConfigParams = ConfigParams.fromTuples(
-//         "collection", null,
-//         "dependencies.connection", "*:connection:mongodb:*:1.0",
+    // connections.*
+    // credential.*
 
-//         // connections.*
-//         // credential.*
+    'options.max_pool_size', 2,
+    'options.keep_alive', 1,
+    'options.connect_timeout', 5000,
+    'options.auto_reconnect', true,
+    'options.max_page_size', 100,
+    'options.debug', true
+  ]);
 
-//         "options.max_pool_size", 2,
-//         "options.keep_alive", 1,
-//         "options.connect_timeout", 5000,
-//         "options.auto_reconnect", true,
-//         "options.max_page_size", 100,
-//         "options.debug", true
-//     );
+  ConfigParams _config;
+  IReferences _references;
+  bool _opened;
+  bool _localConnection;
+  final _indexes = <MongoDbIndex>[];
 
-//     private _config: ConfigParams;
-//     private _references: IReferences;
-//     private _opened: boolean;
-//     private _localConnection: boolean;
-//     private _indexes: MongoDbIndex[] = [];
+  /// The dependency resolver.
+  var dependencyResolver =
+      DependencyResolver(MongoDbPersistence._defaultConfig);
 
-//     /**
-//      * The dependency resolver.
-//      */
-//     protected _dependencyResolver: DependencyResolver = new DependencyResolver(MongoDbPersistence._defaultConfig);
-//     /** 
-//      * The logger.
-//      */
-//     protected _logger: CompositeLogger = new CompositeLogger();
-    
-//     /**
-//      * The MongoDB connection component.
-//      */
-//     protected _connection: MongoDbConnection;
+  /// The logger.
+  var logger = CompositeLogger();
 
-//     /**
-//      * The MongoDB connection object.
-//      */
-//     protected _client: any;
-//     /**
-//      * The MongoDB database name.
-//      */
-//     protected _databaseName: string;
-//     /**
-//      * The MongoDB colleciton object.
-//      */
-//     protected _collectionName: string;
-//     /**
-//      * The MongoDb database object.
-//      */
-//     protected _db: any;
-//     /**
-//      * The MongoDb collection object.
-//      */
-//     protected _collection: any;
+  /// The MongoDB connection component.
+  MongoDbConnection connection;
 
-//     /**
-//      * Creates a new instance of the persistence component.
-//      * 
-//      * @param collection    (optional) a collection name.
-//      */
-//     public constructor(collection?: string) {
-//         this._collectionName = collection;
-//     }
+  /// The MongoDB connection object.
+  mongo.Db client;
 
-//     /**
-//      * Configures component by passing configuration parameters.
-//      * 
-//      * @param config    configuration parameters to be set.
-//      */
-//     public configure(config: ConfigParams): void {
-//         config = config.setDefaults(MongoDbPersistence._defaultConfig);
-//         this._config = config;
+  /// The MongoDB database name.
+  String databaseName;
 
-//         this._dependencyResolver.configure(config);
+  /// The MongoDB colleciton object.
+  String collectionName;
 
-//         this._collectionName = config.getAsStringWithDefault("collection", this._collectionName);
-//     }
+  /// The MongoDb database object.
+  //protected _db: any;
 
-//     /**
-// 	 * Sets references to dependent components.
-// 	 * 
-// 	 * @param references 	references to locate the component dependencies. 
-//      */
-//     public setReferences(references: IReferences): void {
-//         this._references = references;
-//         this._logger.setReferences(references);
+  /// The MongoDb collection object.
+  mongo.DbCollection collection;
 
-//         // Get connection
-//         this._dependencyResolver.setReferences(references);
-//         this._connection = this._dependencyResolver.getOneOptional('connection');
-//         // Or create a local one
-//         if (this._connection == null) {
-//             this._connection = this.createConnection();
-//             this._localConnection = true;
-//         } else {
-//             this._localConnection = false;
-//         }
-//     }
+  /// Creates a new instance of the persistence component.
+  ///
+  /// - [collection]    (optional) a collection name.
+  MongoDbPersistence([String collection]) {
+    collectionName = collection;
+  }
 
-//     /**
-// 	 * Unsets (clears) previously set references to dependent components. 
-//      */
-//     public unsetReferences(): void {
-//         this._connection = null;
-//     }
+  /// Configures component by passing configuration parameters.
+  ///
+  /// - [config]    configuration parameters to be set.
+  @override
+  void configure(ConfigParams config) {
+    config = config.setDefaults(MongoDbPersistence._defaultConfig);
+    _config = config;
+    dependencyResolver.configure(config);
+    collectionName =
+        config.getAsStringWithDefault('collection', collectionName);
+  }
 
-//     private createConnection(): MongoDbConnection {
-//         let connection = new MongoDbConnection();
-        
-//         if (this._config)
-//             connection.configure(this._config);
-        
-//         if (this._references)
-//             connection.setReferences(this._references);
-            
-//         return connection;
-//     }
+  /// Sets references to dependent components.
+  ///
+  /// - [references] 	references to locate the component dependencies.
+  @override
+  void setReferences(IReferences references) {
+    _references = references;
+    logger.setReferences(references);
 
-//     /**
-//      * Adds index definition to create it on opening
-//      * @param keys index keys (fields)
-//      * @param options index options
-//      */
-//     protected ensureIndex(keys: any, options?: any): void {
-//         if (keys == null) return;
-//         this._indexes.push(
-//             <MongoDbIndex> {
-//                 keys: keys,
-//                 options: options
-//             }
-//         );
-//     }
+    // Get connection
+    dependencyResolver.setReferences(references);
+    connection = dependencyResolver.getOneOptional('connection');
+    // Or create a local one
+    if (connection == null) {
+      connection = _createConnection();
+      _localConnection = true;
+    } else {
+      _localConnection = false;
+    }
+  }
 
-//     /** 
-//      * Converts object value from internal to public format.
-//      * 
-//      * @param value     an object in internal format to convert.
-//      * @returns converted object in public format.
-//      */
-//     protected convertToPublic(value: any): any {
-//         if (value) {
-//             if (value._id != undefined) {
-//                 value.id = value._id;
-//                 delete value._id;
-//             }
-//         }
-//         return value;
-//     }    
+  /// Unsets (clears) previously set references to dependent components.
+  @override
+  void unsetReferences() {
+    connection = null;
+  }
 
-//     /** 
-//      * Convert object value from public to internal format.
-//      * 
-//      * @param value     an object in public format to convert.
-//      * @returns converted object in internal format.
-//      */
-//     protected convertFromPublic(value: any): any {
-//         if (value) {
-//             if (value.id != undefined) {
-//                 value._id = value._id || value.id;
-//                 delete value.id;
-//             }
-//         }
-//         return value;
-//     }    
+  MongoDbConnection _createConnection() {
+    var connection = MongoDbConnection();
 
-//     /**
-// 	 * Checks if the component is opened.
-// 	 * 
-// 	 * @returns true if the component has been opened and false otherwise.
-//      */
-//     public isOpen(): boolean {
-//         return this._opened;
-//     }
+    if (_config != null) {
+      connection.configure(_config);
+    }
 
-//     /**
-// 	 * Opens the component.
-// 	 * 
-// 	 * @param correlationId 	(optional) transaction id to trace execution through call chain.
-//      * @param callback 			callback function that receives error or null no errors occured.
-//      */
-//     public open(correlationId: string, callback?: (err: any) => void): void {
-//     	if (this._opened) {
-//             callback(null);
-//             return;
-//         }
-        
-//         if (this._connection == null) {
-//             this._connection = this.createConnection();
-//             this._localConnection = true;
-//         }
+    if (_references != null) {
+      connection.setReferences(_references);
+    }
 
-//         let openCurl = (err) => {
-//             if (err == null && this._connection == null) {
-//                 err = new InvalidStateException(correlationId, 'NO_CONNECTION', 'MongoDB connection is missing');
-//             }
+    return connection;
+  }
 
-//             if (err == null && !this._connection.isOpen()) {
-//                 err = new ConnectionException(correlationId, "CONNECT_FAILED", "MongoDB connection is not opened");
-//             }
+  /// Adds index definition to create it on opening
+  /// - [keys] index keys (fields)
+  /// - [options] index options
+  void ensureIndex(keys, [options]) {
+    if (keys == null) return;
+    _indexes.add(MongoDbIndex(keys, options));
+  }
 
-//             this._opened = false;
+  /// Converts object value from internal to public format.
+  ///
+  /// - value     an object in internal format to convert.
+  /// Returns converted object in public format.
+  dynamic convertToPublic(value) {
+    if (value != null) {
+      if (value._id != null) {
+        value.id = value._id;
+        value.remove('_id');
+      }
+    }
+    return value;
+  }
 
-//             if (err) {
-//                 if (callback) callback(err);
-//             } else {
-//                 this._client = this._connection.getConnection();
-//                 this._db = this._connection.getDatabase();
-//                 this._databaseName = this._connection.getDatabaseName();
-                
-//                 this._db.collection(this._collectionName, (err, collection) => {
-//                     if (err) {
-//                         this._db = null;
-//                         this._client == null;
-//                         err = new ConnectionException(correlationId, "CONNECT_FAILED", "Connection to mongodb failed").withCause(err);
-//                         if (callback) callback(err);
-//                         return;
-//                     }
+  /// Convert object value from public to internal format.
+  ///
+  /// - [value]     an object in public format to convert.
+  /// Returns converted object in internal format.
+  dynamic convertFromPublic(value) {
+    if (value != null) {
+      if (value.id != null) {
+        value._id = value._id ?? value.id;
+        value.remove['id'];
+      }
+    }
+    return value;
+  }
 
-//                     // Recreate indexes
-//                     async.each(this._indexes, (index, callback) => {
-//                         collection.createIndex(index.keys, index.options, (err) => {
-//                             if (err == null) {
-//                                 let options = index.options || {};
-//                                 let indexName = options.name || _.keys(index.keys).join(',');
-//                                 this._logger.debug(correlationId, "Created index %s for collection %s", indexName, this._collectionName);
-//                             }
-//                             callback(err);
-//                         });
-//                     }, (err) => {
-//                         if (err) {
-//                             this._db = null;
-//                             this._client == null;
-//                             err = new ConnectionException(correlationId, "CONNECT_FAILED", "Connection to mongodb failed").withCause(err);    
-//                         } else {
-//                             this._opened = true;
-//                             this._collection = collection;        
-//                             this._logger.debug(correlationId, "Connected to mongodb database %s, collection %s", this._databaseName, this._collectionName);                        
-//                         }
+  /// Checks if the component is opened.
+  ///
+  /// Returns true if the component has been opened and false otherwise.
+  @override
+  bool isOpen() {
+    return _opened;
+  }
 
-//                         if (callback) callback(err);
-//                     });
-//                 });
-//             }
-//         };
+  /// Opens the component.
+  ///
+  /// - correlationId 	(optional) transaction id to trace execution through call chain.
+  /// Return 			Future that receives error or null no errors occured.
+  @override
+  Future open(String correlationId) async {
+    if (_opened) {
+      return null;
+    }
 
-//         if (this._localConnection) {
-//             this._connection.open(correlationId, openCurl);
-//         } else {
-//             openCurl(null);
-//         }
+    if (connection == null) {
+      connection = _createConnection();
+      _localConnection = true;
+    }
 
-//     }
+    if (_localConnection) {
+      try {
+        await connection.open(correlationId);
+      } catch (err) {
+        if (err == null && connection == null) {
+          throw InvalidStateException(correlationId, 'NOconnection',
+                  'MongoDB connection is missing')
+              .withCause(err);
+        }
+      }
+    }
 
-//     /**
-// 	 * Closes component and frees used resources.
-// 	 * 
-// 	 * @param correlationId 	(optional) transaction id to trace execution through call chain.
-//      * @param callback 			callback function that receives error or null no errors occured.
-//      */
-//     public close(correlationId: string, callback?: (err: any) => void): void {
-//     	if (!this._opened) {
-//             callback(null);
-//             return;
-//         }
+    if (!connection.isOpen()) {
+      throw ConnectionException(
+          correlationId, 'CONNECT_FAILED', 'MongoDB connection is not opened');
+    }
 
-//         if (this._connection == null) {
-//             callback(new InvalidStateException(correlationId, 'NO_CONNECTION', 'MongoDb connection is missing'));
-//             return;
-//         }
-        
-//         let closeCurl = (err) => {
-//             this._opened = false;
-//             this._client = null;
-//             this._db = null;
-//             this._collection = null;
+    _opened = false;
 
-//             if (callback) callback(err);
-//         }
+    client = connection.getConnection();
+    databaseName = connection.getDatabaseName();
+    mongo.DbCollection coll;
+    try {
+      coll = await client.collection(collectionName);
+    } catch (err) {
+      client = null;
 
-//         if (this._localConnection) {
-//             this._connection.close(correlationId, closeCurl);
-//         } else {
-//             closeCurl(null);
-//         }
-//     }
+      throw ConnectionException(
+              correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')
+          .withCause(err);
+    }
+    try {
+      // Recreate indexes
+      for (var index in _indexes) {
+        var keys = await client.createIndex(collectionName,
+            keys: index.keys,
+            unique: index.unique,
+            sparse: index.sparse,
+            background: index.background,
+            dropDups: index.dropDups,
+            partialFilterExpression: index.partialFilterExpression,
+            name: index.name);
 
-//     /**
-// 	 * Clears component state.
-// 	 * 
-// 	 * @param correlationId 	(optional) transaction id to trace execution through call chain.
-//      * @param callback 			callback function that receives error or null no errors occured.
-//      */
-//     public clear(correlationId: string, callback?: (err: any) => void): void {
-//         // Return error if collection is not set
-//         if (this._collectionName == null) {
-//             if (callback) callback(new Error('Collection name is not defined'));
-//             return;
-//         }
+        var indexName = keys['name'] ?? index.keys.keys.join(',');
+        logger.debug(correlationId, 'Created index %s for collection %s',
+            [indexName, collectionName]);
+      }
+    } catch (err) {
+      if (err != null) {
+        client = null;
+        throw ConnectionException(
+                correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')
+            .withCause(err);
+      } else {
+        _opened = true;
+        collection = coll;
+        logger.debug(
+            correlationId,
+            'Connected to mongodb database %s, collection %s',
+            [databaseName, collectionName]);
+      }
+    }
+  }
 
-//         // this._db.dropCollection(this._collectionName, (err) => {
-//         //     if (err && (err.message != "ns not found" || err.message != "topology was destroyed"))
-//         //         err = null;
+  /// Closes component and frees used resources.
+  ///
+  /// - [correlationId] 	(optional) transaction id to trace execution through call chain.
+  /// Return 			Future that receives error or null no errors occured.
+  @override
+  Future close(String correlationId) async {
+    if (!_opened) {
+      return null;
+    }
 
-//         //     if (err) {
-//         //         err = new ConnectionException(correlationId, "CONNECT_FAILED", "Connection to mongodb failed")
-//         //             .withCause(err);
-//         //     }
-            
-//         //     if (callback) callback(err);
-//         // });
+    if (connection == null) {
+      throw InvalidStateException(
+          correlationId, 'NOconnection', 'MongoDb connection is missing');
+    }
 
-//         this._collection.deleteMany({}, (err, result) => {
-//             if (err) {
-//                 err = new ConnectionException(correlationId, "CONNECT_FAILED", "Connection to mongodb failed")
-//                     .withCause(err);
-//             }
-            
-//             if (callback) callback(err);
-//         });
-//     }
+    if (_localConnection) {
+      await connection.close(correlationId);
+    }
+    _opened = false;
+    client = null;
+    collection = null;
+  }
 
-// }
+  /// Clears component state.
+  ///
+  /// - [correlationId] 	(optional) transaction id to trace execution through call chain.
+  /// Return 			Future that receives error or null no errors occured.
+
+  @override
+  Future clear(String correlationId) async {
+    // Return error if collection is not set
+    if (collectionName == null) {
+      throw Exception('Collection name is not defined');
+    }
+
+    // this.client.dropCollection(this.collectionName, (err) => {
+    //     if (err && (err.message != 'ns not found' || err.message != 'topology was destroyed'))
+    //         err = null;
+
+    //     if (err) {
+    //         err = new ConnectionException(correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')
+    //             .withCause(err);
+    //     }
+
+    //     if (callback) callback(err);
+    // });
+    try {
+      await collection.remove({});
+    } catch (err) {
+      throw ConnectionException(
+              correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')
+          .withCause(err);
+    }
+  }
+}

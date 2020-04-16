@@ -15,7 +15,7 @@
 //         this.ensureIndex({ key: 1 });
 //     }
 
-//     public getPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, 
+//     public getPageByFilter(String correlationId, filter: FilterParams, paging: PagingParams, 
 //         callback: (err: any, page: DataPage<Dummy>) => void): void {
 //         filter = filter || new FilterParams();
 //         let key = filter.getAsNullableString('key');

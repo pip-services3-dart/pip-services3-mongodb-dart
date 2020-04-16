@@ -9,12 +9,12 @@
 // import { Dummy } from './Dummy';
 
 // export interface IDummyPersistence extends IGetter<Dummy, String>, IWriter<Dummy, String>, IPartialUpdater<Dummy, String> {
-//     getPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, callback: (err: any, page: DataPage<Dummy>) => void): void;
-//     getListByIds(correlationId: string, ids: string[], callback: (err: any, items: Dummy[]) => void): void;
-//     getOneById(correlationId: string, id: string, callback: (err: any, item: Dummy) => void): void;
-//     create(correlationId: string, item: Dummy, callback: (err: any, item: Dummy) => void): void;
-//     update(correlationId: string, item: Dummy, callback: (err: any, item: Dummy) => void): void;
-//     updatePartially(correlationId: string, id: string, data: AnyValueMap, callback: (err: any, item: Dummy) => void): void;
-//     deleteById(correlationId: string, id: string, callback: (err: any, item: Dummy) => void): void;
-//     deleteByIds(correlationId: string, id: string[], callback: (err: any) => void): void;
+//     getPageByFilter(String correlationId, filter: FilterParams, paging: PagingParams, callback: (err: any, page: DataPage<Dummy>) => void): void;
+//     getListByIds(String correlationId, ids: string[], callback: (err: any, items: Dummy[]) => void): void;
+//     getOneById(String correlationId, id: string, callback: (err: any, item: Dummy) => void): void;
+//     create(String correlationId, item: Dummy, callback: (err: any, item: Dummy) => void): void;
+//     update(String correlationId, item: Dummy, callback: (err: any, item: Dummy) => void): void;
+//     updatePartially(String correlationId, id: string, data: AnyValueMap, callback: (err: any, item: Dummy) => void): void;
+//     deleteById(String correlationId, id: string, callback: (err: any, item: Dummy) => void): void;
+//     deleteByIds(String correlationId, id: string[], callback: (err: any) => void): void;
 // }

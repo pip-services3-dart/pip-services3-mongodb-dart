@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  bson:
+    dependency: "direct main"
+    description:
+      name: bson
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.2"
   charcode:
     dependency: transitive
     description:
@@ -78,6 +85,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
+  fixnum:
+    dependency: transitive
+    description:
+      name: fixnum
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.10.11"
   glob:
     dependency: transitive
     description:
@@ -155,6 +169,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.6+3"
+  mongo_dart:
+    dependency: "direct main"
+    description:
+      name: mongo_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
+  mongo_dart_query:
+    dependency: "direct main"
+    description:
+      name: mongo_dart_query
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
+  more:
+    dependency: transitive
+    description:
+      name: more
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.18.2"
   multi_server_socket:
     dependency: transitive
     description:
@@ -222,6 +257,13 @@ packages:
     dependency: "direct main"
     description:
       name: pip_services3_components
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
+  pip_services3_data:
+    dependency: "direct main"
+    description:
+      name: pip_services3_data
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"

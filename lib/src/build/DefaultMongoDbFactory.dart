@@ -1,24 +1,21 @@
-// /** @module build */
-// import { Factory } from 'pip-services3-components-node';
-// import { Descriptor } from 'pip-services3-commons-node';
+// import 'package:pip_services3_components/pip_services3_components.dart';
+// import 'package:pip_services3_commons/pip_services3_commons.dart';
 
-// import { MongoDbConnection } from '../persistence/MongoDbConnection';
+// import '../persistence/MongoDbConnection.dart';
 
-// /**
-//  * Creates MongoDb components by their descriptors.
-//  * 
-//  * @see [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/classes/build.factory.html Factory]]
-//  * @see [[MongoDbConnection]]
-//  */
-// export class DefaultMongoDbFactory extends Factory {
-// 	public static readonly Descriptor: Descriptor = new Descriptor("pip-services", "factory", "mongodb", "default", "1.0");
-//     public static readonly MongoDbConnectionDescriptor: Descriptor = new Descriptor("pip-services", "connection", "mongodb", "*", "1.0");
+// /// Creates MongoDb components by their descriptors.
+// ///
+// /// See [Factory]
+// /// See [MongoDbConnection]
+// class DefaultMongoDbFactory extends Factory {
+//   static final descriptor =
+//       Descriptor('pip-services', 'factory', 'mongodb', 'default', '1.0');
+//   static final MongoDbConnectionDescriptor =
+//       Descriptor('pip-services', 'connection', 'mongodb', '*', '1.0');
 
-//     /**
-// 	 * Create a new instance of the factory.
-// 	 */
-//     public constructor() {
-//         super();
-//         this.registerAsType(DefaultMongoDbFactory.MongoDbConnectionDescriptor, MongoDbConnection);
-//     }
+//   /// Create a new instance of the factory.
+//   DefaultMongoDbFactory() : super() {
+//     registerAsType(
+//         DefaultMongoDbFactory.MongoDbConnectionDescriptor, MongoDbConnection);
+//   }
 // }
