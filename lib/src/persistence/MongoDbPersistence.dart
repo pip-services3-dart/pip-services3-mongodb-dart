@@ -50,38 +50,57 @@ import './MongoDbIndex.dart';
 ///
 ///     class MyMongoDbPersistence extends MongoDbPersistence<MyData> {
 ///
-///       public constructor() {
-///           base('mydata');
-///       }
+///       MyMongoDbPersistence():base('mydata');
 ///
-///       public getByName(String correlationId, name: string, callback: (err, item) => void): void {
-///         var criteria = { name: name };
-///         this._model.findOne(criteria, callback);
+///       Future<MyData> getByName(String correlationId, String name) {
+///           var filter = {'name': name};
+///           var query = mngquery.SelectorBuilder();
+///           var selector = <String, dynamic>{};
+///           selector[r'$query'] = filter;
+///           query.raw(selector);
+///           var item = await collection.findOne(filter);
+///           if (item == null) {
+///             return null;
+///           }
+///           item = convertToPublic(item);
+///           var instance = MyData.fromJson(item);
+///           return instance;
 ///       });
 ///
-///       public set(correlatonId: string, item: MyData, callback: (err) => void): void {
-///         var criteria = { name: item.name };
-///         var options = { upsert: true, new: true };
-///         this._model.findOneAndUpdate(criteria, item, options, callback);
+///       Future<MyData> set(String correlatonId, MyData item) {
+///         if (item == null) {
+///           return null;
+///         }
+///         var jsonMap = json.decode(json.encode(item));
+///         // Assign unique id
+///         if (jsonMap['id'] == null) {
+///           jsonMap['id'] = IdGenerator.nextLong();
+///         }
+///         convertFromPublic(jsonMap);
+///         var filter = {r'$query': {'name': jsonMap['name']}};
+///         var result = await collection.findAndModify(
+///             query: filter, update: jsonMap, returnNew: true, upsert: true);
+///         if (result != null) {
+///             convertToPublic(result);
+///             var newItem = MyData.fromJson(result);;
+///             return newItem;
+///         }
+///         return null;
 ///       }
 ///
 ///     }
 ///
-///     var persistence = new MyMongoDbPersistence();
-///     persistence.configure(ConfigParams.fromTuples(
+///     var persistence = MyMongoDbPersistence();
+///     persistence.configure(ConfigParams.fromTuples([
 ///         'host', 'localhost',
 ///         'port', 27017
-///     ));
+///     ]));
 ///
-///     persitence.open('123', (err) => {
-///          ...
-///     });
+///     await persitence.open('123');
 ///
-///     persistence.set('123', { name: 'ABC' }, (err) => {
-///         persistence.getByName('123', 'ABC', (err, item) => {
-///             console.log(item);                   // Result: { name: 'ABC' }
-///         });
-///     });
+///     await persistence.set('123', { name: 'ABC' });
+///     var item = await persistence.getByName('123', 'ABC');
+///     print(item);         // Result: { name: 'ABC' }
 
 class MongoDbPersistence
     implements

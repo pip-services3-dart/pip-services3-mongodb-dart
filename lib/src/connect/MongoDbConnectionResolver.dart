@@ -10,13 +10,13 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 ///
 ///  ### Configuration parameters ###
 ///
-/// - [connection](s):
+/// - [connection(s)]:
 ///   - [discovery_key]:               (optional) a key to retrieve the connection from [IDiscovery]
 ///   - [host]:                        host name or IP address
 ///   - [port]:                        port number (default: 27017)
 ///   - [database]:                    database name
 ///   - [uri]:                         resource URI or connection string with all parameters in it
-/// - [credential](s):
+/// - [credential(s)]:
 ///   - [store_key]:                   (optional) a key to retrieve the credentials from [ICredentialStore]
 ///   - [username]:                    user name
 ///   - [password]:                    user password
@@ -28,11 +28,9 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 
 class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
   /// The connections resolver.
-
   ConnectionResolver connectionResolver = ConnectionResolver();
 
   /// The credentials resolver.
-
   CredentialResolver credentialResolver = CredentialResolver();
 
   /// Configures component by passing configuration parameters.
@@ -171,7 +169,7 @@ class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
 
   /// Resolves MongoDB connection URI from connection and credential parameters.
   ///
-  /// - correlationId     (optional) transaction id to trace execution through call chain.
+  /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// Return 			Future that receives resolved URI
   /// Throw error.
   Future<String> resolve(String correlationId) async {

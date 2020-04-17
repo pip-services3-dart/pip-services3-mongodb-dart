@@ -85,7 +85,7 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
 
   /// Sets references to dependent components.
   ///
-  /// - references 	references to locate the component dependencies.
+  /// - [references] 	references to locate the component dependencies.
   @override
   void setReferences(IReferences references) {
     logger.setReferences(references);
@@ -150,8 +150,8 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
 
   /// Opens the component.
   ///
-  /// - correlationId 	(optional) transaction id to trace execution through call chain.
-  /// Returns 			Future that receives null no errors occured.
+  /// - [correlationId] 	(optional) transaction id to trace execution through call chain.
+  /// Returns 			      Future that receives null no errors occured.
   /// Throws error
   @override
   Future open(String correlationId) async {
@@ -189,7 +189,7 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
   /// Closes component and frees used resources.
   ///
   /// - correlationId 	(optional) transaction id to trace execution through call chain.
-  /// Return 			Future that receives null no errors occured.
+  /// Return 			      Future that receives null no errors occured.
   /// Throws error
   @override
   Future close(String correlationId) async {
@@ -209,14 +209,12 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
     }
   }
 
+  //Returns used DB connection object
   dynamic getConnection() {
     return connection;
   }
 
-  // dynamic getDatabase() {
-  //     return db;
-  // }
-
+  // Return used database name
   String getDatabaseName() {
     return databaseName;
   }

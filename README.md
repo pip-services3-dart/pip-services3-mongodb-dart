@@ -20,8 +20,8 @@ Quick Links:
 
 The library is created and maintained by 
 - **Sergey Seroukhov**
-- **Levicgev Dmitry**.
+- **Levichev Dmitry**.
 
 The documentation is written by 
 - **Mark Makarychev**
-- **Levicgev Dmitry**.
+- **Levichev Dmitry**.

@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_data/pip_services3_data.dart';
 import './MongoDbPersistence.dart';
-import 'package:bson/bson.dart';
 import 'package:mongo_dart_query/mongo_dart_query.dart' as mngquery;
 
 /// Abstract persistence component that stores data in MongoDB
@@ -53,52 +52,39 @@ import 'package:mongo_dart_query/mongo_dart_query.dart' as mngquery;
 ///
 /// ### Example ###
 ///
-///     class MyMongoDbPersistence extends MongoDbPersistence<MyData, string> {
+///     class MyMongoDbPersistence extends MongoDbPersistence<MyData, String> {
 ///
-///     public constructor() {
-///         base('mydata', new MyDataMongoDbSchema());
-///     }
+///     MyMongoDbPersistence(): base('mydata', new MyDataMongoDbSchema());
 ///
-///     private composeFilter(filter: FilterParams): any {
-///         filter = filter || new FilterParams();
+///     dynamic _composeFilter(FilterParams) {
+///         filter = filter ?? new FilterParams();
 ///         var criteria = [];
 ///         var name = filter.getAsNullableString('name');
 ///         if (name != null)
-///             criteria.push({ name: name });
-///         return criteria.length > 0 ? { $and: criteria } : null;
+///             criteria.add({'name': name });
+///         return criteria.isNotNul ? {r'$and': criteria } : null;
 ///     }
 ///
-///     public getPageByFilter(String correlationId, filter: FilterParams, paging: PagingParams,
-///         callback: (err: any, page: DataPage<MyData>) => void): void {
-///         base.getPageByFilter(correlationId, this.composeFilter(filter), paging, null, null, callback);
+///     Future<DataPage<MyData>> getPageByFilter(String correlationId, FilterParams filter, PagingParams paging) async {
+///         return base.getPageByFilter(correlationId, _composeFilter(filter), paging, null);
 ///     }
 ///
 ///     }
 ///
-///     var persistence = new MyMongoDbPersistence();
-///     persistence.configure(ConfigParams.fromTuples(
+///     var persistence = MyMongoDbPersistence();
+///     persistence.configure(ConfigParams.fromTuples([
 ///         'host', 'localhost',
 ///         'port', 27017
-///     ));
+///     ]));
 ///
-///     persitence.open('123', (err) => {
-///         ...
-///     });
+///     await persitence.open('123');
 ///
-///     persistence.create('123', { id: '1', name: 'ABC' }, (err, item) => {
-///         persistence.getPageByFilter(
-///             '123',
-///             FilterParams.fromTuples('name', 'ABC'),
-///             null,
-///             (err, page) => {
-///                 console.log(page.data);          // Result: { id: '1', name: 'ABC' }
+///     var item = await persistence.create('123', { 'id': '1', 'name': 'ABC' });
+///     var page = await persistence.getPageByFilter('123', FilterParams.fromTuples(['name', 'ABC']), null);
 ///
-///                 persistence.deleteById('123', '1', (err, item) => {
-///                    ...
-///                 });
-///             }
-///         )
-///     });
+///     print(page.data);          // Result: { id: '1', name: 'ABC' }
+///
+///     item = await persistence.deleteById('123', '1');
 
 class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     extends MongoDbPersistence
@@ -141,8 +127,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [filter]            (optional) a filter JSON object
   /// - [paging]            (optional) paging parameters
   /// - [sort]              (optional) sorting JSON object
-  /// Return                Future that receives a data page or error.
-
+  /// Return                Future that receives a data page.
+  /// Throws error
   Future<DataPage<T>> getPageByFilterEx(
       String correlationId, filter, PagingParams paging, sort) async {
     // Adjust max item count based on configuration
@@ -184,8 +170,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [correlationId]    (optional) transaction id to trace execution through call chain.
   /// - [filter]           (optional) a filter JSON object
   /// - [sort]             (optional) sorting JSON object
-  /// Return         Future that receives a data list or error.
-
+  /// Return         Future that receives a data list.
+  /// Throw error
   Future<List<T>> getListByFilterEx(String correlationId, filter, sort) async {
     // Configure options
     var query = mngquery.SelectorBuilder();
@@ -210,7 +196,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   ///
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// - [ids]               ids of data items to be retrieved
-  /// Return         Future that receives a data list or error.
+  /// Return         Future that receives a data list
+  /// Throws error.
   Future<List<T>> getListByIds(String correlationId, List<K> ids) async {
     var filter = {
       '_id': {r'$in': ids}
@@ -222,7 +209,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   ///
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// - [id]                an id of data item to be retrieved.
-  /// Return          Future that receives data item or error.
+  /// Return          Future that receives data item
+  /// Throws error.
   @override
   Future<T> getOneById(String correlationId, K id) async {
     var filter = {'_id': id};
@@ -251,9 +239,10 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// This method shall be called by a public getOneRandom method from child class that
   /// receives FilterParams and converts them into a filter function.
   ///
-  /// - correlationId     (optional) transaction id to trace execution through call chain.
-  /// - filter            (optional) a filter JSON object
-  /// Return          Future that receives a random item or error.
+  /// - [correlationId]     (optional) transaction id to trace execution through call chain.
+  /// - [filter]            (optional) a filter JSON object
+  /// Return                Future that receives a random item
+  /// Throws error.
   Future<T> getOneRandom(String correlationId, filter) async {
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
@@ -279,7 +268,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   ///
   /// - [correlation_id]    (optional) transaction id to trace execution through call chain.
   /// - [item]              an item to be created.
-  /// Return          (optional) Future that receives created item or error.
+  /// Return                Future that receives created item
+  /// Throws error.
   @override
   Future<T> create(String correlationId, T item) async {
     if (item == null) {
@@ -311,7 +301,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   ///
   /// - [correlation_id]    (optional) transaction id to trace execution through call chain.
   /// - [item]              a item to be set.
-  /// Return          (optional) Future that receives updated item or error.
+  /// Return                Future that receives updated item
+  /// Throws error.
   @override
   Future<T> set(String correlationId, T item) async {
     if (item == null) {
@@ -347,7 +338,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   ///
   /// - [correlation_id]    (optional) transaction id to trace execution through call chain.
   /// - [item]              an item to be updated.
-  /// Return          (optional) Future that receives updated item or error.
+  /// Return                Future that receives updated item
+  /// Throws error.
   @override
   Future<T> update(String correlationId, T item) async {
     if (item == null || item.id == null) {
@@ -383,7 +375,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [correlation_id]    (optional) transaction id to trace execution through call chain.
   /// - [id]                an id of data item to be updated.
   /// - [data]              a map with fields to be updated.
-  /// Return          Future that receives updated item or error.
+  /// Return                Future that receives updated item
+  /// Throws error.
   Future<T> updatePartially(
       String correlationId, K id, AnyValueMap data) async {
     if (data == null || id == null) {
@@ -413,7 +406,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   ///
   /// - [correlation_id]    (optional) transaction id to trace execution through call chain.
   /// - [id]                an id of the item to be deleted
-  /// Return          (optional) Future that receives deleted item or error.
+  /// Return                Future that receives deleted item
+  /// Thhrows error.
   @override
   Future<T> deleteById(String correlationId, K id) async {
     var filter = {
@@ -440,7 +434,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   ///
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// - [filter]            (optional) a filter JSON object.
-  /// Return          (optional) Future that receives error or null for success.
+  /// Return          (optional) Future that receives null for success.
+  /// Throws error
   Future deleteByFilter(String correlationId, filter) async {
     var removeFilter = {r'$query': filter};
     var result = await collection.remove(removeFilter);
@@ -453,7 +448,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   ///
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// - [ids]               ids of data items to be deleted.
-  /// Return          (optional) Future that receives error or null for success.
+  /// Return                Future that receives null for success.
+  /// Throws error
   Future deleteByIds(String correlationId, List<K> ids) async {
     var filter = {
       r'$query': {
