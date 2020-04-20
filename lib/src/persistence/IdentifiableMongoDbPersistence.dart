@@ -110,12 +110,57 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
         config.getAsIntegerWithDefault('options.max_page_size', maxPageSize);
   }
 
+  /// Converts object value from internal to public format.
+  ///
+  /// - [item]    an Map object from MongoDB to convert.
+  /// Returns     new created object of type [T] in public format.
+  dynamic convertToPublic(Map<String, dynamic> item) {
+    if (item != null) {
+      if (item['_id'] != null) {
+        item['id'] = item['_id'];
+        item.remove('_id');
+      }
+    }
+    var instance = TypeReflector.createInstanceByType(T, []);
+    instance.fromJson(item);
+    return instance;
+  }
+
+  /// Convert object value from public to internal format.
+  ///
+  /// - [item]     an object of type [T] in public format to convert.
+  /// Returns      converted Map in internal format for MongoDB.
+  Map<String, dynamic> convertFromPublic(dynamic item,
+      {bool createUid = false}) {
+    if (item != null) {
+      // var jsonMap = item.toJson();
+      var jsonMap = json.decode(json.encode(item));
+      // Assign unique id, if need
+      if (createUid && jsonMap['id'] == null) {
+        jsonMap['id'] = IdGenerator.nextLong();
+      }
+
+      if (jsonMap['id'] != null) {
+        jsonMap['_id'] = jsonMap['_id'] ?? jsonMap['id'];
+        jsonMap.remove('id');
+      }
+      return jsonMap;
+    }
+    return null; //<String, dynamic>{};
+  }
+
   /// Converts the given object from the public partial format.
   ///
   /// - [value]     the object to convert from the public partial format.
   /// Returns the initial object.
-  dynamic convertFromPublicPartial(value) {
-    return convertFromPublic(value);
+  Map<String, dynamic> convertFromPublicPartial(Map<String, dynamic> item) {
+    if (item != null) {
+      if (item['id'] != null) {
+        item['_id'] = item['_id'] ?? item['id'];
+        item.remove('id');
+      }
+    }
+    return item;
   }
 
   /// Gets a page of data items retrieved by a given filter and sorted according to sort parameters.
@@ -147,10 +192,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     query.raw(selector);
     var items = <T>[];
     await collection.find(query).forEach((item) {
-      item = convertToPublic(item);
-      var instance = TypeReflector.createInstanceByType(T, []);
-      instance.fromJson(item);
-      items.add(instance);
+      items.add(convertToPublic(item));
     });
     logger.trace(
         correlationId, 'Retrieved %d from %s', [items.length, collectionName]);
@@ -182,10 +224,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     var items = <T>[];
 
     await collection.find(query).forEach((item) {
-      item = convertToPublic(item);
-      var instance = TypeReflector.createInstanceByType(T, []);
-      instance.fromJson(item);
-      items.add(instance);
+      items.add(convertToPublic(item));
     });
     logger.trace(
         correlationId, 'Retrieved %d from %s', [items.length, collectionName]);
@@ -228,10 +267,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     }
     logger.trace(
         correlationId, 'Retrieved from %s with id = %s', [collectionName, id]);
-    item = convertToPublic(item);
-    var instance = TypeReflector.createInstanceByType(T, []);
-    instance.fromJson(item);
-    return instance;
+
+    return convertToPublic(item);
   }
 
   /// Gets a random item from items that match to a given filter.
@@ -255,10 +292,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     var items = await collection.find(query);
     try {
       var item = (items != null) ? await items.single : null;
-      item = convertToPublic(item);
-      var instance = TypeReflector.createInstanceByType(T, []);
-      instance.fromJson(item);
-      return instance;
+
+      return convertToPublic(item);
     } catch (ex) {
       return null;
     }
@@ -276,22 +311,14 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
       return null;
     }
 
-    var jsonMap = json.decode(json.encode(item));
-    // Assign unique id
-    if (jsonMap['id'] == null) {
-      jsonMap['id'] = IdGenerator.nextLong();
-    }
-    convertFromPublic(jsonMap);
+    var jsonMap = convertFromPublic(item, createUid: true);
 
     var result = await collection.insert(jsonMap);
     if (result != null) {
       logger.trace(correlationId, 'Created in %s with id = %s',
           [collectionName, result['_id']]);
 
-      convertToPublic(result);
-      var newItem = TypeReflector.createInstanceByType(T, []);
-      newItem.fromJson(result);
-      return newItem;
+      return convertToPublic(result);
     }
     return null;
   }
@@ -309,12 +336,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
       return null;
     }
 
-    var jsonMap = json.decode(json.encode(item));
-    // Assign unique id
-    if (jsonMap['id'] == null) {
-      jsonMap['id'] = IdGenerator.nextLong();
-    }
-    convertFromPublic(jsonMap);
+    var jsonMap = convertFromPublic(item, createUid: true);
 
     var filter = {
       r'$query': {'_id': jsonMap['_id']}
@@ -326,10 +348,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
       logger.trace(
           correlationId, 'Set in %s with id = %s', [collectionName, item.id]);
 
-      convertToPublic(result);
-      var newItem = TypeReflector.createInstanceByType(T, []);
-      newItem.fromJson(result);
-      return newItem;
+      return convertToPublic(result);
     }
     return null;
   }
@@ -346,9 +365,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
       return null;
     }
 
-    var jsonMap = json.decode(json.encode(item));
-    jsonMap.remove('id');
-    convertFromPublic(jsonMap);
+    var jsonMap = convertFromPublic(item, createUid: false);
+    jsonMap.remove('_id');
 
     var filter = {
       r'$query': {'_id': item.id}
@@ -362,10 +380,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
       logger.trace(correlationId, 'Updated in %s with id = %s',
           [collectionName, item.id]);
 
-      convertToPublic(result);
-      var newItem = TypeReflector.createInstanceByType(T, []);
-      newItem.fromJson(result);
-      return newItem;
+      return convertToPublic(result);
     }
     return null;
   }
@@ -394,10 +409,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
       logger.trace(correlationId, 'Updated partially in %s with id = %s',
           [collectionName, id]);
 
-      convertToPublic(result);
-      var newItem = TypeReflector.createInstanceByType(T, []);
-      newItem.fromJson(result);
-      return newItem;
+      return convertToPublic(result);
     }
     return null;
   }
@@ -420,9 +432,6 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
           correlationId, 'Deleted from %s with id = %s', [collectionName, id]);
 
       convertToPublic(result);
-      var newItem = TypeReflector.createInstanceByType(T, []);
-      newItem.fromJson(result);
-      return newItem;
     }
     return null;
   }
