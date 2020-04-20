@@ -3,3 +3,7 @@
 ## 1.0.0
 
 - Initial version, created by Sergey Seroukhov and Dmitry Levichev
+
+## 1.0.1
+
+- Small optimization of code conversion from/to public methods, created by Dmitry Levichev

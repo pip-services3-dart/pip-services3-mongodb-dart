@@ -230,7 +230,6 @@ class MongoDbPersistence
         partialFilterExpression, name));
   }
 
-
   /// Checks if the component is opened.
   ///
   /// Returns true if the component has been opened and false otherwise.
