@@ -7,3 +7,7 @@
 ## 1.0.1
 
 - Small optimization of code conversion from/to public methods, created by Dmitry Levichev
+
+## 1.0.2
+
+- Fix test and CRUD methods in IdentifiableMongoDbPersistence.

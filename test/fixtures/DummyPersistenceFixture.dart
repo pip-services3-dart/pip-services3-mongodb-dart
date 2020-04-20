@@ -101,11 +101,7 @@ class DummyPersistenceFixture {
     expect(items.length, 2);
 
     // Delete batch
-    try {
-      await _persistence.deleteByIds(null, [dummy1.id, dummy2.id]);
-    } catch (err) {
-      expect(err, isNull);
-    }
+    await _persistence.deleteByIds(null, [dummy1.id, dummy2.id]);
 
     // Read empty batch
     items = await _persistence.getListByIds(null, [dummy1.id, dummy2.id]);

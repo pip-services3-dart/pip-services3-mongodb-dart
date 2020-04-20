@@ -175,7 +175,10 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// Return                Future that receives a data page.
   /// Throws error
   Future<DataPage<T>> getPageByFilterEx(
-      String correlationId, filter, PagingParams paging, sort) async {
+      String correlationId,
+      Map<String, dynamic> filter,
+      PagingParams paging,
+      Map<String, dynamic> sort) async {
     // Adjust max item count based on configuration
     paging = paging ?? PagingParams();
     var skip = paging.getSkip(-1);
@@ -187,13 +190,19 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     if (skip >= 0) query.skip(skip);
     query.limit(take);
     var selector = <String, dynamic>{};
-    selector[r'$query'] = filter;
-    selector['orderby'] = sort;
+    if (filter != null && filter.isNotEmpty) {
+      selector[r'$query'] = filter;
+    }
+    if (sort != null) {
+      selector['orderby'] = sort;
+    }
     query.raw(selector);
+
     var items = <T>[];
-    await collection.find(query).forEach((item) {
+    var result = await collection.find(query).toList();
+    for (var item in result) {
       items.add(convertToPublic(item));
-    });
+    }
     logger.trace(
         correlationId, 'Retrieved %d from %s', [items.length, collectionName]);
     if (pagingEnabled) {
@@ -214,18 +223,28 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [sort]             (optional) sorting JSON object
   /// Return         Future that receives a data list.
   /// Throw error
-  Future<List<T>> getListByFilterEx(String correlationId, filter, sort) async {
+  Future<List<T>> getListByFilterEx(String correlationId,
+      Map<String, dynamic> filter, Map<String, dynamic> sort) async {
     // Configure options
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
-    selector[r'$query'] = filter;
-    selector['orderby'] = sort;
+    if (filter != null && filter.isNotEmpty) {
+      selector[r'$query'] = filter;
+    }
+    if (sort != null) {
+      selector['orderby'] = sort;
+    }
+
     query.raw(selector);
     var items = <T>[];
 
-    await collection.find(query).forEach((item) {
-      items.add(convertToPublic(item));
-    });
+    var results = await collection.find(query).toList();
+    for (var item in results) {
+      if (item != null) {
+        items.add(convertToPublic(item));
+      }
+    }
+    ;
     logger.trace(
         correlationId, 'Retrieved %d from %s', [items.length, collectionName]);
     return items;
@@ -257,9 +276,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     var selector = <String, dynamic>{};
     selector[r'$query'] = filter;
     query.raw(selector);
-
     var item = await collection.findOne(filter);
-
     if (item == null) {
       logger.trace(correlationId, 'Nothing found from %s with id = %s',
           [collectionName, id]);
@@ -280,7 +297,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [filter]            (optional) a filter JSON object
   /// Return                Future that receives a random item
   /// Throws error.
-  Future<T> getOneRandom(String correlationId, filter) async {
+  Future<T> getOneRandom(
+      String correlationId, Map<String, dynamic> filter) async {
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
     selector[r'$query'] = filter;
@@ -292,7 +310,6 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     var items = await collection.find(query);
     try {
       var item = (items != null) ? await items.single : null;
-
       return convertToPublic(item);
     } catch (ex) {
       return null;
@@ -310,15 +327,13 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     if (item == null) {
       return null;
     }
-
     var jsonMap = convertFromPublic(item, createUid: true);
-
     var result = await collection.insert(jsonMap);
-    if (result != null) {
+    if (result != null && result['ok'] == 1.0) {
       logger.trace(correlationId, 'Created in %s with id = %s',
-          [collectionName, result['_id']]);
+          [collectionName, jsonMap['_id']]);
 
-      return convertToPublic(result);
+      return convertToPublic(jsonMap);
     }
     return null;
   }
@@ -335,19 +350,13 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     if (item == null) {
       return null;
     }
-
     var jsonMap = convertFromPublic(item, createUid: true);
-
-    var filter = {
-      r'$query': {'_id': jsonMap['_id']}
-    };
-
+    var filter = {'_id': jsonMap['_id']};
     var result = await collection.findAndModify(
         query: filter, update: jsonMap, returnNew: true, upsert: true);
     if (result != null) {
       logger.trace(
           correlationId, 'Set in %s with id = %s', [collectionName, item.id]);
-
       return convertToPublic(result);
     }
     return null;
@@ -367,12 +376,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
 
     var jsonMap = convertFromPublic(item, createUid: false);
     jsonMap.remove('_id');
-
-    var filter = {
-      r'$query': {'_id': item.id}
-    };
+    var filter = {'_id': item.id};
     var update = {r'$set': jsonMap};
-
     var result = await collection.findAndModify(
         query: filter, update: update, returnNew: true, upsert: false);
 
@@ -400,16 +405,14 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
 
     var newItem = data.innerValue();
     newItem = convertFromPublicPartial(newItem);
-    var filter = {
-      r'$query': {'_id': id}
-    };
+    var filter = {'_id': id};
     var update = {r'$set': newItem};
     var result = await collection.update(filter, update);
-    if (result != null) {
+    if (result != null && result['ok'] == 1.0) {
       logger.trace(correlationId, 'Updated partially in %s with id = %s',
           [collectionName, id]);
 
-      return convertToPublic(result);
+      return await getOneById(correlationId, id);
     }
     return null;
   }
@@ -422,16 +425,15 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// Thhrows error.
   @override
   Future<T> deleteById(String correlationId, K id) async {
-    var filter = {
-      r'$query': {'_id': id}
-    };
+    var filter = {'_id': id};
 
+    var oldItem = await getOneById(correlationId, id);
     var result = await collection.remove(filter);
-    if (result != null) {
+    if (result != null && result['ok'] == 1.0) {
       logger.trace(
           correlationId, 'Deleted from %s with id = %s', [collectionName, id]);
 
-      convertToPublic(result);
+      return oldItem;
     }
     return null;
   }
@@ -445,12 +447,14 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [filter]            (optional) a filter JSON object.
   /// Return          (optional) Future that receives null for success.
   /// Throws error
-  Future deleteByFilter(String correlationId, filter) async {
-    var removeFilter = {r'$query': filter};
-    var result = await collection.remove(removeFilter);
-    var count = result != null ? result.length : 0;
-    logger.trace(
-        correlationId, 'Deleted %d items from %s', [count, collectionName]);
+  Future deleteByFilter(
+      String correlationId, Map<String, dynamic> filter) async {
+    var result = await collection.remove(filter);
+    if (result != null && result['ok'] == 1.0) {
+      var count = result['n'] ?? 0;
+      logger.trace(
+          correlationId, 'Deleted %d items from %s', [count, collectionName]);
+    }
   }
 
   /// Deletes multiple data items by their unique ids.
@@ -461,9 +465,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// Throws error
   Future deleteByIds(String correlationId, List<K> ids) async {
     var filter = {
-      r'$query': {
-        '_id': {r'$in': ids}
-      }
+      '_id': {r'$in': ids}
     };
     return deleteByFilter(correlationId, filter);
   }

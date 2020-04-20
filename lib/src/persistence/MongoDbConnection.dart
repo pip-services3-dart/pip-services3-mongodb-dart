@@ -105,9 +105,9 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
     var keepAlive = options.getAsNullableInteger('keep_alive');
     var connectTimeoutMS = options.getAsNullableInteger('connect_timeout');
     var socketTimeoutMS = options.getAsNullableInteger('socket_timeout');
-    var autoReconnect = options.getAsNullableBoolean('auto_reconnect');
+    //var autoReconnect = options.getAsNullableBoolean('auto_reconnect');
     var reconnectInterval = options.getAsNullableInteger('reconnect_interval');
-    var debug = options.getAsNullableBoolean('debug');
+    //var debug = options.getAsNullableBoolean('debug');
 
     var ssl = options.getAsNullableBoolean('ssl');
     var replicaSet = options.getAsNullableString('replica_set');

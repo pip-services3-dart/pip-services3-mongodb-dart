@@ -18,7 +18,7 @@ class DummyMongoDbPersistence
     filter = filter ?? FilterParams();
     var key = filter.getAsNullableString('key');
 
-    var filterCondition = {};
+    var filterCondition = <String, dynamic>{};
     if (key != null) {
       filterCondition['key'] = key;
     }

@@ -11,4 +11,4 @@ RUN pub get
 RUN pub get --offline
 
 # Specify the command from running tests
-CMD pub run test
+CMD pub run test --concurrency=1

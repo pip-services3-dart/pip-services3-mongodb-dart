@@ -52,12 +52,12 @@ void main() {
       await connection.close(null);
     });
 
-    test('Crud Operations', () {
-      fixture.testCrudOperations();
+    test('Crud Operations', () async {
+     await fixture.testCrudOperations();
     });
 
-    test('Batch Operations', () {
-      fixture.testBatchOperations();
+    test('Batch Operations', () async {
+      await fixture.testBatchOperations();
     });
   });
 }
