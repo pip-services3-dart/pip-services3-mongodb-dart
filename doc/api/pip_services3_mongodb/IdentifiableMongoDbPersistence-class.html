@@ -288,13 +288,31 @@ The MongoDb collection object.
           Configures component by passing configuration parameters. <a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/configure.html">[...]</a>
                   <div class="features">override</div>
 </dd>
+        <dt id="convertFromPublic" class="callable">
+          <span class="name"><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublic.html">convertFromPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublic-param-item"><span class="type-annotation">dynamic</span> <span class="parameter-name">item</span>, {</span> <span class="parameter" id="convertFromPublic-param-createUid"><span class="type-annotation">bool</span> <span class="parameter-name">createUid</span>: <span class="default-value">false</span></span> })
+            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Convert object value from public to internal format. <a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublic.html">[...]</a>
+                  
+</dd>
         <dt id="convertFromPublicPartial" class="callable">
-          <span class="name"><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublicPartial-param-value"><span class="type-annotation">dynamic</span> <span class="parameter-name">value</span></span>)
-            <span class="returntype parameter">&#8594; dynamic</span>
+          <span class="name"><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublicPartial-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span>)
+            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
           </span>
                   </dt>
         <dd>
           Converts the given object from the public partial format. <a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublicPartial.html">[...]</a>
+                  
+</dd>
+        <dt id="convertToPublic" class="callable">
+          <span class="name"><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/convertToPublic.html">convertToPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertToPublic-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+                  </dt>
+        <dd>
+          Converts object value from internal to public format. <a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/convertToPublic.html">[...]</a>
                   
 </dd>
         <dt id="create" class="callable">
@@ -424,24 +442,6 @@ otherwise it create a new data item. <a href="pip_services3_mongodb/Identifiable
           Closes component and frees used resources. <a href="pip_services3_mongodb/MongoDbPersistence/close.html">[...]</a>
                   <div class="features">inherited</div>
 </dd>
-        <dt id="convertFromPublic" class="callable inherited">
-          <span class="name"><a href="pip_services3_mongodb/MongoDbPersistence/convertFromPublic.html">convertFromPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublic-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span>)
-            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd class="inherited">
-          Convert object value from public to internal format. <a href="pip_services3_mongodb/MongoDbPersistence/convertFromPublic.html">[...]</a>
-                  <div class="features">inherited</div>
-</dd>
-        <dt id="convertToPublic" class="callable inherited">
-          <span class="name"><a href="pip_services3_mongodb/MongoDbPersistence/convertToPublic.html">convertToPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertToPublic-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span>)
-            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd class="inherited">
-          Converts object value from internal to public format. <a href="pip_services3_mongodb/MongoDbPersistence/convertToPublic.html">[...]</a>
-                  <div class="features">inherited</div>
-</dd>
         <dt id="ensureIndex" class="callable inherited">
           <span class="name"><a href="pip_services3_mongodb/MongoDbPersistence/ensureIndex.html">ensureIndex</a></span><span class="signature">(<wbr><span class="parameter" id="ensureIndex-param-keys"><span class="type-annotation">dynamic</span> <span class="parameter-name">keys</span>, {</span> <span class="parameter" id="ensureIndex-param-key"><span class="type-annotation">String</span> <span class="parameter-name">key</span></span> <span class="parameter" id="ensureIndex-param-unique"><span class="type-annotation">bool</span> <span class="parameter-name">unique</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="ensureIndex-param-sparse"><span class="type-annotation">bool</span> <span class="parameter-name">sparse</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="ensureIndex-param-background"><span class="type-annotation">bool</span> <span class="parameter-name">background</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="ensureIndex-param-dropDups"><span class="type-annotation">bool</span> <span class="parameter-name">dropDups</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="ensureIndex-param-partialFilterExpression"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">partialFilterExpression</span>, </span> <span class="parameter" id="ensureIndex-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span> })
             <span class="returntype parameter">&#8594; void</span>
@@ -550,7 +550,9 @@ otherwise it create a new data item. <a href="pip_services3_mongodb/Identifiable
     
       <li class="section-title"><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence-class.html#instance-methods">Methods</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/configure.html">configure</a></li>
+      <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublic.html">convertFromPublic</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></li>
+      <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/convertToPublic.html">convertToPublic</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/create.html">create</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByFilter.html">deleteByFilter</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteById.html">deleteById</a></li>
@@ -565,8 +567,6 @@ otherwise it create a new data item. <a href="pip_services3_mongodb/Identifiable
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/updatePartially.html">updatePartially</a></li>
       <li class="inherited"><a href="pip_services3_mongodb/MongoDbPersistence/clear.html">clear</a></li>
       <li class="inherited"><a href="pip_services3_mongodb/MongoDbPersistence/close.html">close</a></li>
-      <li class="inherited"><a href="pip_services3_mongodb/MongoDbPersistence/convertFromPublic.html">convertFromPublic</a></li>
-      <li class="inherited"><a href="pip_services3_mongodb/MongoDbPersistence/convertToPublic.html">convertToPublic</a></li>
       <li class="inherited"><a href="pip_services3_mongodb/MongoDbPersistence/ensureIndex.html">ensureIndex</a></li>
       <li class="inherited"><a href="pip_services3_mongodb/MongoDbPersistence/isOpen.html">isOpen</a></li>
       <li class="inherited"><a href="pip_services3_mongodb/MongoDbPersistence/noSuchMethod.html">noSuchMethod</a></li>

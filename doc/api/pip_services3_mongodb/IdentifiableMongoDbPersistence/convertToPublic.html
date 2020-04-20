@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the updatePartially method from the IdentifiableMongoDbPersistence class, for the Dart programming language.">
-  <title>updatePartially method - IdentifiableMongoDbPersistence class - pip_services3_mongodb library - Dart API</title>
+  <meta name="description" content="API docs for the convertToPublic method from the IdentifiableMongoDbPersistence class, for the Dart programming language.">
+  <title>convertToPublic method - IdentifiableMongoDbPersistence class - pip_services3_mongodb library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="../..">
 
@@ -27,9 +27,9 @@
     <li><a href="index.html">pip_services3_mongodb</a></li>
     <li><a href="pip_services3_mongodb/pip_services3_mongodb-library.html">pip_services3_mongodb</a></li>
     <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence-class.html">IdentifiableMongoDbPersistence<span class="signature">&lt;<wbr><span class="type-parameter">T extends IIdentifiable&lt;<wbr><span class="type-parameter">K</span>&gt;</span>, <span class="type-parameter">K</span>&gt;</span></a></li>
-    <li class="self-crumb">updatePartially method</li>
+    <li class="self-crumb">convertToPublic method</li>
   </ol>
-  <div class="self-name">updatePartially</div>
+  <div class="self-name">convertToPublic</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -48,7 +48,7 @@
       <li><a href="index.html">pip_services3_mongodb</a></li>
       <li><a href="pip_services3_mongodb/pip_services3_mongodb-library.html">pip_services3_mongodb</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence-class.html">IdentifiableMongoDbPersistence<span class="signature">&lt;<wbr><span class="type-parameter">T extends IIdentifiable&lt;<wbr><span class="type-parameter">K</span>&gt;</span>, <span class="type-parameter">K</span>&gt;</span></a></li>
-      <li class="self-crumb">updatePartially method</li>
+      <li class="self-crumb">convertToPublic method</li>
     </ol>
     
     <h5>IdentifiableMongoDbPersistence class</h5>
@@ -109,22 +109,19 @@
   </div><!--/.sidebar-offcanvas-->
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-method">updatePartially</span> method</h1></div>
+      <div><h1><span class="kind-method">convertToPublic</span> method</h1></div>
 
     <section class="multi-line-signature">
-      <span class="returntype">Future<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
-            <span class="name ">updatePartially</span>
-(<wbr><span class="parameter" id="updatePartially-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span> <span class="parameter" id="updatePartially-param-id"><span class="type-annotation">K</span> <span class="parameter-name">id</span>, </span> <span class="parameter" id="updatePartially-param-data"><span class="type-annotation">AnyValueMap</span> <span class="parameter-name">data</span></span>)
+      <span class="returntype">dynamic</span>
+            <span class="name ">convertToPublic</span>
+(<wbr><span class="parameter" id="convertToPublic-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span>)
       
     </section>
     <section class="desc markdown">
-      <p>Updates only few selected fields in a data item.</p>
+      <p>Converts object value from internal to public format.</p>
 <ul>
-<li><code>correlation_id</code>    (optional) transaction id to trace execution through call chain.</li>
-<li><code>id</code>                an id of data item to be updated.</li>
-<li><code>data</code>              a map with fields to be updated.
-Return                Future that receives updated item
-Throws error.</li>
+<li><code>item</code>    an Map object from MongoDB to convert.
+Returns     new created object of type <code>T</code> in public format.</li>
 </ul>
     </section>
     
