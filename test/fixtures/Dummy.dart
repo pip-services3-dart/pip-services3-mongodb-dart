@@ -6,15 +6,9 @@ class Dummy implements IStringIdentifiable, ICloneable {
   String key;
   String content;
 
-  Dummy() {
-    Dummy.from('', '', '');
-  }
+  Dummy();
 
   Dummy.from(this.id, this.key, this.content);
-  
-  factory Dummy.fromJson(Map<String, dynamic> json) {
-    return Dummy.from(json['id'], json['key'], json['content']);
-  }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{'id': id, 'key': key, 'content': content};

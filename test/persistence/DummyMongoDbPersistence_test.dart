@@ -44,7 +44,7 @@ void main() {
       await fixture.testCrudOperations();
     });
 
-    test('Batch Operations', () async{
+    test('Batch Operations', () async {
       await fixture.testBatchOperations();
     });
   });

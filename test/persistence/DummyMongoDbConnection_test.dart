@@ -53,7 +53,7 @@ void main() {
     });
 
     test('Crud Operations', () async {
-     await fixture.testCrudOperations();
+      await fixture.testCrudOperations();
     });
 
     test('Batch Operations', () async {
