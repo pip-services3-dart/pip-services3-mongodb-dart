@@ -2,7 +2,8 @@
 /npm-debug.log
 /.idea
 *.map
+/.vscode
 /obj/test/**/*
-/config/config.json
-/config/config.yaml
 /data/dummies.json
+/pubspec.lock
+/.packages

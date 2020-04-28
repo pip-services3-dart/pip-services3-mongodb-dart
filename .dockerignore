@@ -4,7 +4,8 @@
 /.dockerignore
 /doc
 /node_modules
-/doc
 /docker
 /*.sh
 /*.ps1
+/*.md
+/example
