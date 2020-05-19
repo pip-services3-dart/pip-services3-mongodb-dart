@@ -38,6 +38,11 @@ class DummyPersistenceFixture {
     expect(page, isNotNull);
     expect(page.data.length, 2);
 
+    // Get count
+
+    var count = await _persistence.getCountByFilter(null, null);
+    expect(count, 2);
+
     // Update the dummy
     dummy1.content = 'Updated Content 1';
     result = await _persistence.update(null, dummy1);

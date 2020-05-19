@@ -351,6 +351,15 @@ The MongoDb collection object.
           Deletes multiple data items by their unique ids. <a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByIds.html">[...]</a>
                   
 </dd>
+        <dt id="getCountByFilterEx" class="callable">
+          <span class="name"><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/getCountByFilterEx.html">getCountByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getCountByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span> <span class="parameter" id="getCountByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">int</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Gets a count of data items retrieved by a given filter. <a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/getCountByFilterEx.html">[...]</a>
+                  
+</dd>
         <dt id="getListByFilterEx" class="callable">
           <span class="name"><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByFilterEx.html">getListByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getListByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span> <span class="parameter" id="getListByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span> <span class="parameter" id="getListByFilterEx-param-sort"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">sort</span></span>)
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">List<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
@@ -557,6 +566,7 @@ otherwise it create a new data item. <a href="pip_services3_mongodb/Identifiable
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByFilter.html">deleteByFilter</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteById.html">deleteById</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByIds.html">deleteByIds</a></li>
+      <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/getCountByFilterEx.html">getCountByFilterEx</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByFilterEx.html">getListByFilterEx</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByIds.html">getListByIds</a></li>
       <li><a href="pip_services3_mongodb/IdentifiableMongoDbPersistence/getOneById.html">getOneById</a></li>
@@ -589,7 +599,7 @@ otherwise it create a new data item. <a href="pip_services3_mongodb/Identifiable
 <footer>
   <span class="no-break">
     pip_services3_mongodb
-      1.0.1
+      1.0.3
   </span>
 
   <!-- footer-text placeholder -->

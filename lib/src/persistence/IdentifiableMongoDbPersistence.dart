@@ -469,4 +469,26 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     };
     return deleteByFilter(correlationId, filter);
   }
+
+  /// Gets a count of data items retrieved by a given filter.
+  ///
+  /// This method shall be called by a public getCountByFilter method from child class that
+  /// receives FilterParams and converts them into a filter function.
+  ///
+  /// - [correlationId]    (optional) transaction id to trace execution through call chain.
+  /// - [filter]           (optional) a filter JSON object
+  /// Return         Future that receives a data list.
+  /// Throw error
+  Future<int> getCountByFilterEx(
+      String correlationId, Map<String, dynamic> filter) async {
+    // Configure options
+    var query = mngquery.SelectorBuilder();
+    var selector = <String, dynamic>{};
+    if (filter != null && filter.isNotEmpty) {
+      selector[r'$query'] = filter;
+    }
+    var count = await collection.count(query);
+    logger.trace(correlationId, 'Find %d items in %s', [count, collectionName]);
+    return count;
+  }
 }

@@ -11,3 +11,7 @@
 ## 1.0.2
 
 - Fix test and CRUD methods in IdentifiableMongoDbPersistence.
+
+## 1.0.3
+
+- Add getCountbyFilterEx method in IdentifiableMongodbPersisstence

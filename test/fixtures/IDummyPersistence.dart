@@ -23,4 +23,5 @@ abstract class IDummyPersistence
   @override
   Future<Dummy> deleteById(String correlationId, String id);
   Future deleteByIds(String correlationId, List<String> id);
+  Future<int> getCountByFilter(String correlationId, FilterParams filter);
 }
