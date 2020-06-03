@@ -15,3 +15,7 @@
 ## 1.0.3
 
 - Add getCountbyFilterEx method in IdentifiableMongodbPersisstence
+
+## 1.0.4
+
+- Add suffix for method deleteByFilter in IdentifiableMongodbPersisstence

@@ -447,7 +447,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [filter]            (optional) a filter JSON object.
   /// Return          (optional) Future that receives null for success.
   /// Throws error
-  Future deleteByFilter(
+  Future deleteByFilterEx(
       String correlationId, Map<String, dynamic> filter) async {
     var result = await collection.remove(filter);
     if (result != null && result['ok'] == 1.0) {
@@ -467,7 +467,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     var filter = {
       '_id': {r'$in': ids}
     };
-    return deleteByFilter(correlationId, filter);
+    return deleteByFilterEx(correlationId, filter);
   }
 
   /// Gets a count of data items retrieved by a given filter.
