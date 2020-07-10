@@ -19,3 +19,7 @@
 ## 1.0.4
 
 - Add suffix for method deleteByFilter in IdentifiableMongodbPersisstence
+
+## 1.0.5
+
+- Moved some CRUD operations from IdentifiableMongoDbPersistence to MongoDbPersistence

@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
+import 'package:mongo_dart_query/mongo_dart_query.dart' as mngquery;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_components/pip_services3_components.dart';
 
@@ -101,7 +103,7 @@ import './MongoDbIndex.dart';
 ///     var item = await persistence.getByName('123', 'ABC');
 ///     print(item);         // Result: { name: 'ABC' }
 
-class MongoDbPersistence
+class MongoDbPersistence<T>
     implements
         IReferenceable,
         IUnreferenceable,
@@ -128,6 +130,7 @@ class MongoDbPersistence
   bool _opened = false;
   bool _localConnection;
   final _indexes = <MongoDbIndex>[];
+  var maxPageSize = 100;
 
   /// The dependency resolver.
   var dependencyResolver =
@@ -358,5 +361,235 @@ class MongoDbPersistence
               correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')
           .withCause(err);
     }
+  }
+
+  /// Converts object value from internal to public format.
+  ///
+  /// - [item]    an Map object from MongoDB to convert.
+  /// Returns     new created object of type [T] in public format.
+  dynamic convertToPublic(Map<String, dynamic> item) {
+    if (item != null) {
+      if (item['_id'] != null) {
+        item['id'] = item['_id'];
+        item.remove('_id');
+      }
+    }
+    var instance = TypeReflector.createInstanceByType(T, []);
+    instance.fromJson(item);
+    return instance;
+  }
+
+  /// Convert object value from public to internal format.
+  ///
+  /// - [item]     an object of type [T] in public format to convert.
+  /// Returns      converted Map in internal format for MongoDB.
+  Map<String, dynamic> convertFromPublic(dynamic item,
+      {bool createUid = false}) {
+    if (item != null) {
+      // var jsonMap = item.toJson();
+      var jsonMap = json.decode(json.encode(item));
+      // Assign unique id, if need
+      if (createUid && jsonMap['id'] == null) {
+        jsonMap['id'] = IdGenerator.nextLong();
+      }
+
+      if (jsonMap['id'] != null) {
+        jsonMap['_id'] = jsonMap['_id'] ?? jsonMap['id'];
+        jsonMap.remove('id');
+      }
+      return jsonMap;
+    }
+    return null; //<String, dynamic>{};
+  }
+
+  /// Converts the given object from the public partial format.
+  ///
+  /// - [value]     the object to convert from the public partial format.
+  /// Returns the initial object.
+  Map<String, dynamic> convertFromPublicPartial(Map<String, dynamic> item) {
+    if (item != null) {
+      if (item['id'] != null) {
+        item['_id'] = item['_id'] ?? item['id'];
+        item.remove('id');
+      }
+    }
+    return item;
+  }
+
+  /// Gets a page of data items retrieved by a given filter and sorted according to sort parameters.
+  ///
+  /// This method shall be called by a public getPageByFilter method from child class that
+  /// receives FilterParams and converts them into a filter function.
+  ///
+  /// - [correlationId]     (optional) transaction id to trace execution through call chain.
+  /// - [filter]            (optional) a filter JSON object
+  /// - [paging]            (optional) paging parameters
+  /// - [sort]              (optional) sorting JSON object
+  /// Return                Future that receives a data page.
+  /// Throws error
+  Future<DataPage<T>> getPageByFilterEx(
+      String correlationId,
+      Map<String, dynamic> filter,
+      PagingParams paging,
+      Map<String, dynamic> sort) async {
+    // Adjust max item count based on configuration
+    paging = paging ?? PagingParams();
+    var skip = paging.getSkip(-1);
+    var take = paging.getTake(maxPageSize);
+    var pagingEnabled = paging.total;
+
+    // Configure options
+    var query = mngquery.SelectorBuilder();
+    if (skip >= 0) query.skip(skip);
+    query.limit(take);
+    var selector = <String, dynamic>{};
+    if (filter != null && filter.isNotEmpty) {
+      selector[r'$query'] = filter;
+    }
+    if (sort != null) {
+      selector['orderby'] = sort;
+    }
+    query.raw(selector);
+
+    var items = <T>[];
+    var result = await collection.find(query).toList();
+    for (var item in result) {
+      items.add(convertToPublic(item));
+    }
+    logger.trace(
+        correlationId, 'Retrieved %d from %s', [items.length, collectionName]);
+    if (pagingEnabled) {
+      var count = await collection.count(selector);
+      return DataPage<T>(items, count);
+    } else {
+      return DataPage<T>(items, 0);
+    }
+  }
+
+  /// Gets a list of data items retrieved by a given filter and sorted according to sort parameters.
+  ///
+  /// This method shall be called by a public getListByFilter method from child class that
+  /// receives FilterParams and converts them into a filter function.
+  ///
+  /// - [correlationId]    (optional) transaction id to trace execution through call chain.
+  /// - [filter]           (optional) a filter JSON object
+  /// - [sort]             (optional) sorting JSON object
+  /// Return         Future that receives a data list.
+  /// Throw error
+  Future<List<T>> getListByFilterEx(String correlationId,
+      Map<String, dynamic> filter, Map<String, dynamic> sort) async {
+    // Configure options
+    var query = mngquery.SelectorBuilder();
+    var selector = <String, dynamic>{};
+    if (filter != null && filter.isNotEmpty) {
+      selector[r'$query'] = filter;
+    }
+    if (sort != null) {
+      selector['orderby'] = sort;
+    }
+
+    query.raw(selector);
+    var items = <T>[];
+
+    var results = await collection.find(query).toList();
+    for (var item in results) {
+      if (item != null) {
+        items.add(convertToPublic(item));
+      }
+    }
+    ;
+    logger.trace(
+        correlationId, 'Retrieved %d from %s', [items.length, collectionName]);
+    return items;
+  }
+
+  /// Deletes data items that match to a given filter.
+  ///
+  /// This method shall be called by a public deleteByFilter method from child class that
+  /// receives FilterParams and converts them into a filter function.
+  ///
+  /// - [correlationId]     (optional) transaction id to trace execution through call chain.
+  /// - [filter]            (optional) a filter JSON object.
+  /// Return          (optional) Future that receives null for success.
+  /// Throws error
+  Future deleteByFilterEx(
+      String correlationId, Map<String, dynamic> filter) async {
+    var result = await collection.remove(filter);
+    if (result != null && result['ok'] == 1.0) {
+      var count = result['n'] ?? 0;
+      logger.trace(
+          correlationId, 'Deleted %d items from %s', [count, collectionName]);
+    }
+  }
+
+  /// Gets a random item from items that match to a given filter.
+  ///
+  /// This method shall be called by a public getOneRandom method from child class that
+  /// receives FilterParams and converts them into a filter function.
+  ///
+  /// - [correlationId]     (optional) transaction id to trace execution through call chain.
+  /// - [filter]            (optional) a filter JSON object
+  /// Return                Future that receives a random item
+  /// Throws error.
+  Future<T> getOneRandom(
+      String correlationId, Map<String, dynamic> filter) async {
+    var query = mngquery.SelectorBuilder();
+    var selector = <String, dynamic>{};
+    selector[r'$query'] = filter;
+    var count = await collection.count(query);
+    var pos = RandomInteger.nextInteger(0, count - 1);
+    query.skip(pos >= 0 ? pos : 0);
+    query.limit(1);
+    query.raw(selector);
+    var items = await collection.find(query);
+    try {
+      var item = (items != null) ? await items.single : null;
+      return convertToPublic(item);
+    } catch (ex) {
+      return null;
+    }
+  }
+
+  /// Gets a count of data items retrieved by a given filter.
+  ///
+  /// This method shall be called by a public getCountByFilter method from child class that
+  /// receives FilterParams and converts them into a filter function.
+  ///
+  /// - [correlationId]    (optional) transaction id to trace execution through call chain.
+  /// - [filter]           (optional) a filter JSON object
+  /// Return         Future that receives a data list.
+  /// Throw error
+  Future<int> getCountByFilterEx(
+      String correlationId, Map<String, dynamic> filter) async {
+    // Configure options
+    var query = mngquery.SelectorBuilder();
+    var selector = <String, dynamic>{};
+    if (filter != null && filter.isNotEmpty) {
+      selector[r'$query'] = filter;
+    }
+    var count = await collection.count(query);
+    logger.trace(correlationId, 'Find %d items in %s', [count, collectionName]);
+    return count;
+  }
+
+  /// Creates a data item.
+  ///
+  /// - [correlation_id]    (optional) transaction id to trace execution through call chain.
+  /// - [item]              an item to be created.
+  /// Return                Future that receives created item
+  /// Throws error.
+  Future<T> create(String correlationId, T item) async {
+    if (item == null) {
+      return null;
+    }
+    var jsonMap = convertFromPublic(item, createUid: false);
+    var result = await collection.insert(jsonMap);
+    if (result != null && result['ok'] == 1.0) {
+      logger.trace(correlationId, 'Created in %s with id = %s',
+          [collectionName, jsonMap['_id']]);
+
+      return convertToPublic(jsonMap);
+    }
+    return null;
   }
 }

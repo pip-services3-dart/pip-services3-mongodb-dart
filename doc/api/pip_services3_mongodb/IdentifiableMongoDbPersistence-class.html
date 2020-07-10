@@ -164,7 +164,7 @@ item = await persistence.deleteById('123', '1');
         <dt>Inheritance</dt>
         <dd><ul class="gt-separated dark clazz-relationships">
           <li>Object</li>
-          <li><a href="../pip_services3_mongodb/MongoDbPersistence-class.html">MongoDbPersistence</a></li>
+          <li><a href="../pip_services3_mongodb/MongoDbPersistence-class.html">MongoDbPersistence</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></li>
           <li>IdentifiableMongoDbPersistence</li>
         </ul></dd>
 
@@ -188,18 +188,10 @@ item = await persistence.deleteById('123', '1');
       </dl>
     </section>
 
-    <section class="summary offset-anchor" id="instance-properties">
+    <section class="summary offset-anchor inherited" id="instance-properties">
       <h2>Properties</h2>
 
       <dl class="properties">
-        <dt id="maxPageSize" class="property">
-          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/maxPageSize.html">maxPageSize</a></span>
-          <span class="signature">&#8596; int</span>         
-        </dt>
-        <dd>
-           
-                  <div class="features">read / write</div>
-</dd>
         <dt id="client" class="property inherited">
           <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/client.html">client</a></span>
           <span class="signature">&#8596; Db</span>         
@@ -265,6 +257,14 @@ The MongoDb collection object.
           The logger. 
                   <div class="features">read / write, inherited</div>
 </dd>
+        <dt id="maxPageSize" class="property inherited">
+          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/maxPageSize.html">maxPageSize</a></span>
+          <span class="signature">&#8596; int</span>         
+        </dt>
+        <dd class="inherited">
+           
+                  <div class="features">read / write, inherited</div>
+</dd>
         <dt id="runtimeType" class="property inherited">
           <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/runtimeType.html">runtimeType</a></span>
           <span class="signature">&#8594; Type</span>         
@@ -288,33 +288,6 @@ The MongoDb collection object.
           Configures component by passing configuration parameters. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/configure.html">[...]</a>
                   <div class="features">override</div>
 </dd>
-        <dt id="convertFromPublic" class="callable">
-          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublic.html">convertFromPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublic-param-item"><span class="type-annotation">dynamic</span> <span class="parameter-name">item</span>, </span><wbr><span class="parameter" id="convertFromPublic-param-createUid">{<span class="type-annotation">bool</span> <span class="parameter-name">createUid</span>: <span class="default-value">false</span>}</span><wbr>)
-            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          Convert object value from public to internal format. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublic.html">[...]</a>
-                  
-</dd>
-        <dt id="convertFromPublicPartial" class="callable">
-          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublicPartial-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span><wbr>)
-            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          Converts the given object from the public partial format. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublicPartial.html">[...]</a>
-                  
-</dd>
-        <dt id="convertToPublic" class="callable">
-          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertToPublic.html">convertToPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertToPublic-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span><wbr>)
-            <span class="returntype parameter">&#8594; dynamic</span>
-          </span>
-                  </dt>
-        <dd>
-          Converts object value from internal to public format. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertToPublic.html">[...]</a>
-                  
-</dd>
         <dt id="create" class="callable">
           <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/create.html">create</a></span><span class="signature">(<wbr><span class="parameter" id="create-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="create-param-item"><span class="type-annotation">T</span> <span class="parameter-name">item</span></span><wbr>)
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
@@ -322,16 +295,7 @@ The MongoDb collection object.
                   </dt>
         <dd>
           Creates a data item. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/create.html">[...]</a>
-                  
-</dd>
-        <dt id="deleteByFilterEx" class="callable">
-          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByFilterEx.html">deleteByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="deleteByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="deleteByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span><wbr>)
-            <span class="returntype parameter">&#8594; Future</span>
-          </span>
-                  </dt>
-        <dd>
-          Deletes data items that match to a given filter. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByFilterEx.html">[...]</a>
-                  
+                  <div class="features">override</div>
 </dd>
         <dt id="deleteById" class="callable">
           <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteById.html">deleteById</a></span><span class="signature">(<wbr><span class="parameter" id="deleteById-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="deleteById-param-id"><span class="type-annotation">K</span> <span class="parameter-name">id</span></span><wbr>)
@@ -351,24 +315,6 @@ The MongoDb collection object.
           Deletes multiple data items by their unique ids. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByIds.html">[...]</a>
                   
 </dd>
-        <dt id="getCountByFilterEx" class="callable">
-          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getCountByFilterEx.html">getCountByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getCountByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getCountByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span><wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">int</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          Gets a count of data items retrieved by a given filter. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getCountByFilterEx.html">[...]</a>
-                  
-</dd>
-        <dt id="getListByFilterEx" class="callable">
-          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByFilterEx.html">getListByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getListByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getListByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span>, </span><wbr><span class="parameter" id="getListByFilterEx-param-sort"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">sort</span></span><wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">List<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          Gets a list of data items retrieved by a given filter and sorted according to sort parameters. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByFilterEx.html">[...]</a>
-                  
-</dd>
         <dt id="getListByIds" class="callable">
           <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByIds.html">getListByIds</a></span><span class="signature">(<wbr><span class="parameter" id="getListByIds-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getListByIds-param-ids"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">K</span>&gt;</span></span> <span class="parameter-name">ids</span></span><wbr>)
             <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">List<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
@@ -385,24 +331,6 @@ The MongoDb collection object.
                   </dt>
         <dd>
           Gets a data item by its unique id. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getOneById.html">[...]</a>
-                  
-</dd>
-        <dt id="getOneRandom" class="callable">
-          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getOneRandom.html">getOneRandom</a></span><span class="signature">(<wbr><span class="parameter" id="getOneRandom-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getOneRandom-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span><wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          Gets a random item from items that match to a given filter. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getOneRandom.html">[...]</a>
-                  
-</dd>
-        <dt id="getPageByFilterEx" class="callable">
-          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getPageByFilterEx.html">getPageByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getPageByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getPageByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span>, </span><wbr><span class="parameter" id="getPageByFilterEx-param-paging"><span class="type-annotation">PagingParams</span> <span class="parameter-name">paging</span>, </span><wbr><span class="parameter" id="getPageByFilterEx-param-sort"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">sort</span></span><wbr>)
-            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">DataPage<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          Gets a page of data items retrieved by a given filter and sorted according to sort parameters. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getPageByFilterEx.html">[...]</a>
                   
 </dd>
         <dt id="set" class="callable">
@@ -451,6 +379,42 @@ otherwise it create a new data item. <a href="../pip_services3_mongodb/Identifia
           Closes component and frees used resources. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/close.html">[...]</a>
                   <div class="features">inherited</div>
 </dd>
+        <dt id="convertFromPublic" class="callable inherited">
+          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublic.html">convertFromPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublic-param-item"><span class="type-annotation">dynamic</span> <span class="parameter-name">item</span>, </span><wbr><span class="parameter" id="convertFromPublic-param-createUid">{<span class="type-annotation">bool</span> <span class="parameter-name">createUid</span>: <span class="default-value">false</span>}</span><wbr>)
+            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Convert object value from public to internal format. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublic.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="convertFromPublicPartial" class="callable inherited">
+          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublicPartial-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Converts the given object from the public partial format. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublicPartial.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="convertToPublic" class="callable inherited">
+          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertToPublic.html">convertToPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertToPublic-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span><wbr>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Converts object value from internal to public format. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertToPublic.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="deleteByFilterEx" class="callable inherited">
+          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByFilterEx.html">deleteByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="deleteByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="deleteByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Deletes data items that match to a given filter. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByFilterEx.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
         <dt id="ensureIndex" class="callable inherited">
           <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/ensureIndex.html">ensureIndex</a></span><span class="signature">(<wbr><span class="parameter" id="ensureIndex-param-keys"><span class="type-annotation">dynamic</span> <span class="parameter-name">keys</span>, </span><wbr><span class="parameter" id="ensureIndex-param-key">{<span class="type-annotation">String</span> <span class="parameter-name">key</span>, </span><wbr><span class="parameter" id="ensureIndex-param-unique"><span class="type-annotation">bool</span> <span class="parameter-name">unique</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="ensureIndex-param-sparse"><span class="type-annotation">bool</span> <span class="parameter-name">sparse</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="ensureIndex-param-background"><span class="type-annotation">bool</span> <span class="parameter-name">background</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="ensureIndex-param-dropDups"><span class="type-annotation">bool</span> <span class="parameter-name">dropDups</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="ensureIndex-param-partialFilterExpression"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">partialFilterExpression</span>, </span><wbr><span class="parameter" id="ensureIndex-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span>}</span><wbr>)
             <span class="returntype parameter">&#8594; void</span>
@@ -458,6 +422,42 @@ otherwise it create a new data item. <a href="../pip_services3_mongodb/Identifia
                   </dt>
         <dd class="inherited">
           Adds index definition to create it on opening <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/ensureIndex.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="getCountByFilterEx" class="callable inherited">
+          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getCountByFilterEx.html">getCountByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getCountByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getCountByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">int</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Gets a count of data items retrieved by a given filter. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getCountByFilterEx.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="getListByFilterEx" class="callable inherited">
+          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByFilterEx.html">getListByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getListByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getListByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span>, </span><wbr><span class="parameter" id="getListByFilterEx-param-sort"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">sort</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">List<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Gets a list of data items retrieved by a given filter and sorted according to sort parameters. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByFilterEx.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="getOneRandom" class="callable inherited">
+          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getOneRandom.html">getOneRandom</a></span><span class="signature">(<wbr><span class="parameter" id="getOneRandom-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getOneRandom-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Gets a random item from items that match to a given filter. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getOneRandom.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="getPageByFilterEx" class="callable inherited">
+          <span class="name"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getPageByFilterEx.html">getPageByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getPageByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getPageByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span>, </span><wbr><span class="parameter" id="getPageByFilterEx-param-paging"><span class="type-annotation">PagingParams</span> <span class="parameter-name">paging</span>, </span><wbr><span class="parameter" id="getPageByFilterEx-param-sort"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">sort</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">DataPage<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Gets a page of data items retrieved by a given filter and sorted according to sort parameters. <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getPageByFilterEx.html">[...]</a>
                   <div class="features">inherited</div>
 </dd>
         <dt id="isOpen" class="callable inherited">
@@ -543,10 +543,9 @@ otherwise it create a new data item. <a href="../pip_services3_mongodb/Identifia
       <li class="section-title"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence-class.html#constructors">Constructors</a></li>
       <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/IdentifiableMongoDbPersistence.html">IdentifiableMongoDbPersistence</a></li>
     
-      <li class="section-title">
+      <li class="section-title inherited">
         <a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence-class.html#instance-properties">Properties</a>
       </li>
-      <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/maxPageSize.html">maxPageSize</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/client.html">client</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/collection.html">collection</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/collectionName.html">collectionName</a></li>
@@ -555,29 +554,30 @@ otherwise it create a new data item. <a href="../pip_services3_mongodb/Identifia
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/dependencyResolver.html">dependencyResolver</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/hashCode.html">hashCode</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/logger.html">logger</a></li>
+      <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/maxPageSize.html">maxPageSize</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence-class.html#instance-methods">Methods</a></li>
       <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/configure.html">configure</a></li>
-      <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublic.html">convertFromPublic</a></li>
-      <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></li>
-      <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertToPublic.html">convertToPublic</a></li>
       <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/create.html">create</a></li>
-      <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByFilterEx.html">deleteByFilterEx</a></li>
       <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteById.html">deleteById</a></li>
       <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByIds.html">deleteByIds</a></li>
-      <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getCountByFilterEx.html">getCountByFilterEx</a></li>
-      <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByFilterEx.html">getListByFilterEx</a></li>
       <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByIds.html">getListByIds</a></li>
       <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getOneById.html">getOneById</a></li>
-      <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getOneRandom.html">getOneRandom</a></li>
-      <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getPageByFilterEx.html">getPageByFilterEx</a></li>
       <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/set.html">set</a></li>
       <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/update.html">update</a></li>
       <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/updatePartially.html">updatePartially</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/clear.html">clear</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/close.html">close</a></li>
+      <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublic.html">convertFromPublic</a></li>
+      <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></li>
+      <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/convertToPublic.html">convertToPublic</a></li>
+      <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/deleteByFilterEx.html">deleteByFilterEx</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/ensureIndex.html">ensureIndex</a></li>
+      <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getCountByFilterEx.html">getCountByFilterEx</a></li>
+      <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getListByFilterEx.html">getListByFilterEx</a></li>
+      <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getOneRandom.html">getOneRandom</a></li>
+      <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/getPageByFilterEx.html">getPageByFilterEx</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/isOpen.html">isOpen</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/noSuchMethod.html">noSuchMethod</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence/open.html">open</a></li>
@@ -599,7 +599,7 @@ otherwise it create a new data item. <a href="../pip_services3_mongodb/Identifia
 <footer>
   <span class="no-break">
     pip_services3_mongodb
-      1.0.4
+      1.0.5
   </span>
 
 </footer>

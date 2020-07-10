@@ -26,7 +26,7 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">pip_services3_mongodb</a></li>
     <li><a href="../pip_services3_mongodb/pip_services3_mongodb-library.html">pip_services3_mongodb</a></li>
-    <li class="self-crumb">MongoDbPersistence class</li>
+    <li class="self-crumb">MongoDbPersistence<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class</li>
   </ol>
   <div class="self-name">MongoDbPersistence</div>
   <form class="search navbar-right" role="search">
@@ -46,7 +46,7 @@
     <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
       <li><a href="../index.html">pip_services3_mongodb</a></li>
       <li><a href="../pip_services3_mongodb/pip_services3_mongodb-library.html">pip_services3_mongodb</a></li>
-      <li class="self-crumb">MongoDbPersistence class</li>
+      <li class="self-crumb">MongoDbPersistence<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class</li>
     </ol>
     
     <h5>pip_services3_mongodb library</h5>
@@ -69,7 +69,7 @@
   </div>
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-class">MongoDbPersistence</span> class </h1></div>
+      <div><h1><span class="kind-class">MongoDbPersistence&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class </h1></div>
 
     <section class="desc markdown">
       <p>Abstract persistence component that stores data in MongoDB using plain driver.</p>
@@ -262,6 +262,14 @@ The MongoDb collection object.
           The logger. 
                   <div class="features">read / write</div>
 </dd>
+        <dt id="maxPageSize" class="property">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/maxPageSize.html">maxPageSize</a></span>
+          <span class="signature">&#8596; int</span>         
+        </dt>
+        <dd>
+           
+                  <div class="features">read / write</div>
+</dd>
         <dt id="hashCode" class="property inherited">
           <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/hashCode.html">hashCode</a></span>
           <span class="signature">&#8594; int</span>         
@@ -311,6 +319,51 @@ The MongoDb collection object.
           Configures component by passing configuration parameters. <a href="../pip_services3_mongodb/MongoDbPersistence/configure.html">[...]</a>
                   
 </dd>
+        <dt id="convertFromPublic" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublic.html">convertFromPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublic-param-item"><span class="type-annotation">dynamic</span> <span class="parameter-name">item</span>, </span><wbr><span class="parameter" id="convertFromPublic-param-createUid">{<span class="type-annotation">bool</span> <span class="parameter-name">createUid</span>: <span class="default-value">false</span>}</span><wbr>)
+            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Convert object value from public to internal format. <a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublic.html">[...]</a>
+                  
+</dd>
+        <dt id="convertFromPublicPartial" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublicPartial-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Converts the given object from the public partial format. <a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublicPartial.html">[...]</a>
+                  
+</dd>
+        <dt id="convertToPublic" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/convertToPublic.html">convertToPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertToPublic-param-item"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span><wbr>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+                  </dt>
+        <dd>
+          Converts object value from internal to public format. <a href="../pip_services3_mongodb/MongoDbPersistence/convertToPublic.html">[...]</a>
+                  
+</dd>
+        <dt id="create" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/create.html">create</a></span><span class="signature">(<wbr><span class="parameter" id="create-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="create-param-item"><span class="type-annotation">T</span> <span class="parameter-name">item</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Creates a data item. <a href="../pip_services3_mongodb/MongoDbPersistence/create.html">[...]</a>
+                  
+</dd>
+        <dt id="deleteByFilterEx" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/deleteByFilterEx.html">deleteByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="deleteByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="deleteByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future</span>
+          </span>
+                  </dt>
+        <dd>
+          Deletes data items that match to a given filter. <a href="../pip_services3_mongodb/MongoDbPersistence/deleteByFilterEx.html">[...]</a>
+                  
+</dd>
         <dt id="ensureIndex" class="callable">
           <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/ensureIndex.html">ensureIndex</a></span><span class="signature">(<wbr><span class="parameter" id="ensureIndex-param-keys"><span class="type-annotation">dynamic</span> <span class="parameter-name">keys</span>, </span><wbr><span class="parameter" id="ensureIndex-param-key">{<span class="type-annotation">String</span> <span class="parameter-name">key</span>, </span><wbr><span class="parameter" id="ensureIndex-param-unique"><span class="type-annotation">bool</span> <span class="parameter-name">unique</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="ensureIndex-param-sparse"><span class="type-annotation">bool</span> <span class="parameter-name">sparse</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="ensureIndex-param-background"><span class="type-annotation">bool</span> <span class="parameter-name">background</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="ensureIndex-param-dropDups"><span class="type-annotation">bool</span> <span class="parameter-name">dropDups</span>: <span class="default-value">false</span>, </span><wbr><span class="parameter" id="ensureIndex-param-partialFilterExpression"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">partialFilterExpression</span>, </span><wbr><span class="parameter" id="ensureIndex-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span>}</span><wbr>)
             <span class="returntype parameter">&#8594; void</span>
@@ -318,6 +371,42 @@ The MongoDb collection object.
                   </dt>
         <dd>
           Adds index definition to create it on opening <a href="../pip_services3_mongodb/MongoDbPersistence/ensureIndex.html">[...]</a>
+                  
+</dd>
+        <dt id="getCountByFilterEx" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/getCountByFilterEx.html">getCountByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getCountByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getCountByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">int</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Gets a count of data items retrieved by a given filter. <a href="../pip_services3_mongodb/MongoDbPersistence/getCountByFilterEx.html">[...]</a>
+                  
+</dd>
+        <dt id="getListByFilterEx" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/getListByFilterEx.html">getListByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getListByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getListByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span>, </span><wbr><span class="parameter" id="getListByFilterEx-param-sort"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">sort</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">List<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Gets a list of data items retrieved by a given filter and sorted according to sort parameters. <a href="../pip_services3_mongodb/MongoDbPersistence/getListByFilterEx.html">[...]</a>
+                  
+</dd>
+        <dt id="getOneRandom" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/getOneRandom.html">getOneRandom</a></span><span class="signature">(<wbr><span class="parameter" id="getOneRandom-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getOneRandom-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Gets a random item from items that match to a given filter. <a href="../pip_services3_mongodb/MongoDbPersistence/getOneRandom.html">[...]</a>
+                  
+</dd>
+        <dt id="getPageByFilterEx" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/getPageByFilterEx.html">getPageByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getPageByFilterEx-param-correlationId"><span class="type-annotation">String</span> <span class="parameter-name">correlationId</span>, </span><wbr><span class="parameter" id="getPageByFilterEx-param-filter"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span>, </span><wbr><span class="parameter" id="getPageByFilterEx-param-paging"><span class="type-annotation">PagingParams</span> <span class="parameter-name">paging</span>, </span><wbr><span class="parameter" id="getPageByFilterEx-param-sort"><span class="type-annotation">Map<span class="signature">&lt;<wbr><span class="type-parameter">String</span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">sort</span></span><wbr>)
+            <span class="returntype parameter">&#8594; Future<span class="signature">&lt;<wbr><span class="type-parameter">DataPage<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Gets a page of data items retrieved by a given filter and sorted according to sort parameters. <a href="../pip_services3_mongodb/MongoDbPersistence/getPageByFilterEx.html">[...]</a>
                   
 </dd>
         <dt id="isOpen" class="callable">
@@ -413,6 +502,7 @@ The MongoDb collection object.
       <li><a href="../pip_services3_mongodb/MongoDbPersistence/databaseName.html">databaseName</a></li>
       <li><a href="../pip_services3_mongodb/MongoDbPersistence/dependencyResolver.html">dependencyResolver</a></li>
       <li><a href="../pip_services3_mongodb/MongoDbPersistence/logger.html">logger</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/maxPageSize.html">maxPageSize</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/MongoDbPersistence/hashCode.html">hashCode</a></li>
       <li class="inherited"><a href="../pip_services3_mongodb/MongoDbPersistence/runtimeType.html">runtimeType</a></li>
     
@@ -420,7 +510,16 @@ The MongoDb collection object.
       <li><a href="../pip_services3_mongodb/MongoDbPersistence/clear.html">clear</a></li>
       <li><a href="../pip_services3_mongodb/MongoDbPersistence/close.html">close</a></li>
       <li><a href="../pip_services3_mongodb/MongoDbPersistence/configure.html">configure</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublic.html">convertFromPublic</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/convertToPublic.html">convertToPublic</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/create.html">create</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/deleteByFilterEx.html">deleteByFilterEx</a></li>
       <li><a href="../pip_services3_mongodb/MongoDbPersistence/ensureIndex.html">ensureIndex</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/getCountByFilterEx.html">getCountByFilterEx</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/getListByFilterEx.html">getListByFilterEx</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/getOneRandom.html">getOneRandom</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/getPageByFilterEx.html">getPageByFilterEx</a></li>
       <li><a href="../pip_services3_mongodb/MongoDbPersistence/isOpen.html">isOpen</a></li>
       <li><a href="../pip_services3_mongodb/MongoDbPersistence/open.html">open</a></li>
       <li><a href="../pip_services3_mongodb/MongoDbPersistence/setReferences.html">setReferences</a></li>
@@ -442,7 +541,7 @@ The MongoDb collection object.
 <footer>
   <span class="no-break">
     pip_services3_mongodb
-      1.0.4
+      1.0.5
   </span>
 
 </footer>

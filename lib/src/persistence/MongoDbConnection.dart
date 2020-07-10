@@ -173,9 +173,9 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
 
       connection = mongo.Db(uri);
       await connection.open();
-      if (settings['userName'] != null) {
+      if (settings['username'] != null) {
         await connection.authenticate(
-            settings['userName'], settings['password']);
+            settings['username'], settings['password']);
       }
 
       databaseName = connection.databaseName;
