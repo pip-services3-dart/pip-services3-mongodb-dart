@@ -43,8 +43,8 @@ import './MongoDbIndex.dart';
 ///
 /// ### References ###
 ///
-/// - \*:logger:\*:\*:1.0           (optional) [ILogger] components to pass log messages
-/// - \*:discovery:\*:\*:1.0        (optional) [IDiscovery] services
+/// - \*:logger:\*:\*:1.0           (optional) [ILogger](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ILogger-class.html) components to pass log messages
+/// - \*:discovery:\*:\*:1.0        (optional) [IDiscovery](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html) services
 /// - \*:credential-store:\*:\*:1.0 (optional) Credential stores to resolve credentials
 ///
 /// ### Example ###

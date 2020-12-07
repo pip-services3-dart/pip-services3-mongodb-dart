@@ -20,12 +20,12 @@ import 'package:mongo_dart_query/mongo_dart_query.dart' as mngquery;
 ///
 /// - [collection]:                  (optional) MongoDB collection name
 /// - [connection(s)]:
-///   - [discovery_key]:             (optional) a key to retrieve the connection from [IDiscovery]]
+///   - [discovery_key]:             (optional) a key to retrieve the connection from [IDiscovery](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html)
 ///   - [host]:                      host name or IP address
 ///   - [port]:                      port number (default: 27017)
 ///   - [uri]:                       resource URI or connection string with all parameters in it
 /// - [credential(s)]:
-///   - [store_key]:                 (optional) a key to retrieve the credentials from [ICredentialStore]]
+///   - [store_key]:                 (optional) a key to retrieve the credentials from [ICredentialStore](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ICredentialStore-class.html)
 ///   - [username]:                  (optional) user name
 ///   - [password]:                  (optional) user password
 /// - [options]:
@@ -45,8 +45,8 @@ import 'package:mongo_dart_query/mongo_dart_query.dart' as mngquery;
 ///
 /// ### References ###
 ///
-/// - \*:logger:\*:\*:1.0           (optional) [ILogger]] components to pass log messages components to pass log messages
-/// - \*:discovery:\*:\*:1.0        (optional) [IDiscovery]] services
+/// - \*:logger:\*:\*:1.0           (optional) [ILogger](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ILogger-class.html) components to pass log messages components to pass log messages
+/// - \*:discovery:\*:\*:1.0        (optional) [IDiscovery](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html) services
 /// - \*:credential-store:\*:\*:1.0 (optional) Credential stores to resolve credentials
 ///
 /// ### Example ###
