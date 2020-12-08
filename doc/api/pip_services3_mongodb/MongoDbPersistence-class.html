@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the MongoDbPersistence class from the pip_services3_mongodb library, for the Dart programming language.">
+  <title>MongoDbPersistence class - pip_services3_mongodb library - Dart API</title>
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../static-assets/github.css">
+  <link rel="stylesheet" href="../static-assets/styles.css">
+  <link rel="icon" href="../static-assets/favicon.png">
+
+</head>
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">pip_services3_mongodb</a></li>
+    <li><a href="../pip_services3_mongodb/pip_services3_mongodb-library.html">pip_services3_mongodb</a></li>
+    <li class="self-crumb">MongoDbPersistence<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class</li>
+  </ol>
+  <div class="self-name">MongoDbPersistence</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="../index.html">pip_services3_mongodb</a></li>
+      <li><a href="../pip_services3_mongodb/pip_services3_mongodb-library.html">pip_services3_mongodb</a></li>
+      <li class="self-crumb">MongoDbPersistence<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class</li>
+    </ol>
+    
+    <h5>pip_services3_mongodb library</h5>
+    <ol>
+      <li class="section-title"><a href="../pip_services3_mongodb/pip_services3_mongodb-library.html#classes">Classes</a></li>
+      <li><a href="../pip_services3_mongodb/DefaultMongoDbFactory-class.html">DefaultMongoDbFactory</a></li>
+      <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence-class.html">IdentifiableMongoDbPersistence</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbConnection-class.html">MongoDbConnection</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbConnectionResolver-class.html">MongoDbConnectionResolver</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbIndex-class.html">MongoDbIndex</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence-class.html">MongoDbPersistence</a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    </ol>
+  </div>
+
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-class">MongoDbPersistence&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class  </h1></div>
+
+    <section class="desc markdown">
+      <p>Abstract persistence component that stores data in MongoDB using plain driver.</p>
+<p>This is the most basic persistence component that is only
+able to store data items of any type. Specific CRUD operations
+over the data items must be implemented in child classes by
+accessing this.client or this.collection properties.</p>
+<h3 id="configuration-parameters">Configuration parameters</h3>
+<ul>
+<li><a href="../pip_services3_mongodb/MongoDbPersistence/collection.html">collection</a>:                  (optional) MongoDB collection name</li>
+<li><a href="s">connection</a>:
+<ul>
+<li><code>discovery_key</code>:             (optional) a key to retrieve the connection from <code>connect.idiscovery.html IDiscovery</code>]</li>
+<li><code>host</code>:                      host name or IP address</li>
+<li><code>port</code>:                      port number (default: 27017)</li>
+<li><code>uri</code>:                       resource URI or connection string with all parameters in it</li>
+</ul>
+</li>
+<li><a href="s">credential</a>:
+<ul>
+<li><code>store_key</code>:                 (optional) a key to retrieve the credentials from <code>auth.icredentialstore.html ICredentialStore</code>]</li>
+<li><code>username</code>:                  (optional) user name</li>
+<li><code>password</code>:                  (optional) user password</li>
+</ul>
+</li>
+<li><code>options</code>:
+<ul>
+<li><code>max_pool_size</code>:             (optional) maximum connection pool size (default: 2)</li>
+<li><code>keep_alive</code>:                (optional) enable connection keep alive (default: true)</li>
+<li><code>connect_timeout</code>:           (optional) connection timeout in milliseconds (default: 5000)</li>
+<li><code>socket_timeout</code>:            (optional) socket timeout in milliseconds (default: 360000)</li>
+<li><code>auto_reconnect</code>:            (optional) enable auto reconnection (default: true)</li>
+<li><code>reconnect_interval</code>:        (optional) reconnection interval in milliseconds (default: 1000)</li>
+<li><code>max_page_size</code>:             (optional) maximum page size (default: 100)</li>
+<li><code>replica_set</code>:               (optional) name of replica set</li>
+<li><code>ssl</code>:                       (optional) enable SSL connection (default: false)</li>
+<li><code>auth_source</code>:               (optional) authentication source</li>
+<li><code>debug</code>:                     (optional) enable debug output (default: false).</li>
+</ul>
+</li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li>*:logger:*:*:1.0           (optional) <a href="https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ILogger-class.html">ILogger</a> components to pass log messages</li>
+<li>*:discovery:*:*:1.0        (optional) <a href="https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html">IDiscovery</a> services</li>
+<li>*:credential-store:*:*:1.0 (optional) Credential stores to resolve credentials</li>
+</ul>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code>class MyMongoDbPersistence extends MongoDbPersistence&lt;MyData&gt; {
+
+  MyMongoDbPersistence():base('mydata');
+
+  Future&lt;MyData&gt; getByName(String correlationId, String name) {
+      var filter = {'name': name};
+      var query = mngquery.SelectorBuilder();
+      var selector = &lt;String, dynamic&gt;{};
+      selector[r'$query'] = filter;
+      query.raw(selector);
+      var item = await collection.findOne(filter);
+      if (item == null) {
+        return null;
+      }
+      item = convertToPublic(item);
+      var instance = MyData.fromJson(item);
+      return instance;
+  });
+
+  Future&lt;MyData&gt; set(String correlatonId, MyData item) {
+    if (item == null) {
+      return null;
+    }
+    var jsonMap = json.decode(json.encode(item));
+    // Assign unique id
+    if (jsonMap['id'] == null) {
+      jsonMap['id'] = IdGenerator.nextLong();
+    }
+    convertFromPublic(jsonMap);
+    var filter = {r'$query': {'name': jsonMap['name']}};
+    var result = await collection.findAndModify(
+        query: filter, update: jsonMap, returnNew: true, upsert: true);
+    if (result != null) {
+        convertToPublic(result);
+        var newItem = MyData.fromJson(result);;
+        return newItem;
+    }
+    return null;
+  }
+
+}
+
+var persistence = MyMongoDbPersistence();
+persistence.configure(ConfigParams.fromTuples([
+    'host', 'localhost',
+    'port', 27017
+]));
+
+await persitence.open('123');
+
+await persistence.set('123', { name: 'ABC' });
+var item = await persistence.getByName('123', 'ABC');
+print(item);         // Result: { name: 'ABC' }
+</code></pre>
+    </section>
+    
+    <section>
+      <dl class="dl-horizontal">
+
+        <dt>Implemented types</dt>
+        <dd>
+          <ul class="comma-separated clazz-relationships">
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/IReferenceable-class.html">IReferenceable</a></li>
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/IUnreferenceable-class.html">IUnreferenceable</a></li>
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/IConfigurable-class.html">IConfigurable</a></li>
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/IOpenable-class.html">IOpenable</a></li>
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/ICleanable-class.html">ICleanable</a></li>
+          </ul>
+        </dd>
+
+
+        <dt>Implementers</dt>
+        <dd><ul class="comma-separated clazz-relationships">
+          <li><a href="../pip_services3_mongodb/IdentifiableMongoDbPersistence-class.html">IdentifiableMongoDbPersistence</a></li>
+        </ul></dd>
+
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="constructors">
+      <h2>Constructors</h2>
+
+      <dl class="constructor-summary-list">
+        <dt id="MongoDbPersistence" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/MongoDbPersistence.html">MongoDbPersistence</a></span><span class="signature">(<span class="parameter" id="-param-collection">[<span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">collection</span>]</span>)</span>
+        </dt>
+        <dd>
+          Creates a new instance of the persistence component. <a href="../pip_services3_mongodb/MongoDbPersistence/MongoDbPersistence.html">[...]</a>
+        </dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="client" class="property">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/client.html">client</a></span>
+          <span class="signature">&#8596; <a href="https://pub.dev/documentation/mongo_dart/0.4.4/mongo_dart/Db-class.html">Db</a></span>         
+        </dt>
+        <dd>
+          The MongoDB connection object. 
+                  <div class="features">read / write</div>
+</dd>
+        <dt id="collection" class="property">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/collection.html">collection</a></span>
+          <span class="signature">&#8596; <a href="https://pub.dev/documentation/mongo_dart/0.4.4/mongo_dart/DbCollection-class.html">DbCollection</a></span>         
+        </dt>
+        <dd>
+          The MongoDb database object.
+The MongoDb collection object. 
+                  <div class="features">read / write</div>
+</dd>
+        <dt id="collectionName" class="property">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/collectionName.html">collectionName</a></span>
+          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>         
+        </dt>
+        <dd>
+          The MongoDB colleciton object. 
+                  <div class="features">read / write</div>
+</dd>
+        <dt id="connection" class="property">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/connection.html">connection</a></span>
+          <span class="signature">&#8596; <a href="../pip_services3_mongodb/MongoDbConnection-class.html">MongoDbConnection</a></span>         
+        </dt>
+        <dd>
+          The MongoDB connection component. 
+                  <div class="features">read / write</div>
+</dd>
+        <dt id="databaseName" class="property">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/databaseName.html">databaseName</a></span>
+          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>         
+        </dt>
+        <dd>
+          The MongoDB database name. 
+                  <div class="features">read / write</div>
+</dd>
+        <dt id="dependencyResolver" class="property">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/dependencyResolver.html">dependencyResolver</a></span>
+          <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/DependencyResolver-class.html">DependencyResolver</a></span>         
+        </dt>
+        <dd>
+          The dependency resolver. 
+                  <div class="features">read / write</div>
+</dd>
+        <dt id="hashCode" class="property inherited">
+          <span class="name"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/hashCode.html">hashCode</a></span>
+          <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/int-class.html">int</a></span>         
+        </dt>
+        <dd class="inherited">
+          The hash code for this object. <a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/hashCode.html">[...]</a>
+                  <div class="features">read-only, inherited</div>
+</dd>
+        <dt id="logger" class="property">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/logger.html">logger</a></span>
+          <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_components/1.0.6/pip_services3_components/CompositeLogger-class.html">CompositeLogger</a></span>         
+        </dt>
+        <dd>
+          The logger. 
+                  <div class="features">read / write</div>
+</dd>
+        <dt id="maxPageSize" class="property">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/maxPageSize.html">maxPageSize</a></span>
+          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.4/dart-core/int-class.html">int</a></span>         
+        </dt>
+        <dd>
+           
+                  <div class="features">read / write</div>
+</dd>
+        <dt id="runtimeType" class="property inherited">
+          <span class="name"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/runtimeType.html">runtimeType</a></span>
+          <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/Type-class.html">Type</a></span>         
+        </dt>
+        <dd class="inherited">
+          A representation of the runtime type of the object. 
+                  <div class="features">read-only, inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-methods">
+      <h2>Methods</h2>
+      <dl class="callables">
+        <dt id="clear" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/clear.html">clear</a></span><span class="signature">(<wbr><span class="parameter" id="clear-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a></span>
+          </span>
+                  </dt>
+        <dd>
+          Clears component state. <a href="../pip_services3_mongodb/MongoDbPersistence/clear.html">[...]</a>
+                  <div class="features">override</div>
+</dd>
+        <dt id="close" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/close.html">close</a></span><span class="signature">(<wbr><span class="parameter" id="close-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a></span>
+          </span>
+                  </dt>
+        <dd>
+          Closes component and frees used resources. <a href="../pip_services3_mongodb/MongoDbPersistence/close.html">[...]</a>
+                  <div class="features">override</div>
+</dd>
+        <dt id="configure" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/configure.html">configure</a></span><span class="signature">(<wbr><span class="parameter" id="configure-param-config"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/ConfigParams-class.html">ConfigParams</a></span> <span class="parameter-name">config</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Configures component by passing configuration parameters. <a href="../pip_services3_mongodb/MongoDbPersistence/configure.html">[...]</a>
+                  <div class="features">override</div>
+</dd>
+        <dt id="convertFromPublic" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublic.html">convertFromPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublic-param-item"><span class="type-annotation">dynamic</span> <span class="parameter-name">item</span>, </span><span class="parameter" id="convertFromPublic-param-createUid">{<span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">createUid</span>: <span class="default-value">false</span>}</span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Convert object value from public to internal format. <a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublic.html">[...]</a>
+                  
+</dd>
+        <dt id="convertFromPublicPartial" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></span><span class="signature">(<wbr><span class="parameter" id="convertFromPublicPartial-param-item"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Converts the given object from the public partial format. <a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublicPartial.html">[...]</a>
+                  
+</dd>
+        <dt id="convertToPublic" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/convertToPublic.html">convertToPublic</a></span><span class="signature">(<wbr><span class="parameter" id="convertToPublic-param-item"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">item</span></span>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+                  </dt>
+        <dd>
+          Converts object value from internal to public format. <a href="../pip_services3_mongodb/MongoDbPersistence/convertToPublic.html">[...]</a>
+                  
+</dd>
+        <dt id="create" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/create.html">create</a></span><span class="signature">(<wbr><span class="parameter" id="create-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="create-param-item"><span class="type-annotation">T</span> <span class="parameter-name">item</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Creates a data item. <a href="../pip_services3_mongodb/MongoDbPersistence/create.html">[...]</a>
+                  
+</dd>
+        <dt id="deleteByFilterEx" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/deleteByFilterEx.html">deleteByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="deleteByFilterEx-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="deleteByFilterEx-param-filter"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a></span>
+          </span>
+                  </dt>
+        <dd>
+          Deletes data items that match to a given filter. <a href="../pip_services3_mongodb/MongoDbPersistence/deleteByFilterEx.html">[...]</a>
+                  
+</dd>
+        <dt id="ensureIndex" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/ensureIndex.html">ensureIndex</a></span><span class="signature">(<wbr><span class="parameter" id="ensureIndex-param-keys"><span class="type-annotation">dynamic</span> <span class="parameter-name">keys</span>, </span><span class="parameter" id="ensureIndex-param-key">{<span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">key</span>, </span><span class="parameter" id="ensureIndex-param-unique"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">unique</span>: <span class="default-value">false</span>, </span><span class="parameter" id="ensureIndex-param-sparse"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">sparse</span>: <span class="default-value">false</span>, </span><span class="parameter" id="ensureIndex-param-background"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">background</span>: <span class="default-value">false</span>, </span><span class="parameter" id="ensureIndex-param-dropDups"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">dropDups</span>: <span class="default-value">false</span>, </span><span class="parameter" id="ensureIndex-param-partialFilterExpression"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">partialFilterExpression</span>, </span><span class="parameter" id="ensureIndex-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>}</span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Adds index definition to create it on opening <a href="../pip_services3_mongodb/MongoDbPersistence/ensureIndex.html">[...]</a>
+                  
+</dd>
+        <dt id="getCountByFilterEx" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/getCountByFilterEx.html">getCountByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getCountByFilterEx-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="getCountByFilterEx-param-filter"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/int-class.html">int</a></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Gets a count of data items retrieved by a given filter. <a href="../pip_services3_mongodb/MongoDbPersistence/getCountByFilterEx.html">[...]</a>
+                  
+</dd>
+        <dt id="getListByFilterEx" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/getListByFilterEx.html">getListByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getListByFilterEx-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="getListByFilterEx-param-filter"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span>, </span><span class="parameter" id="getListByFilterEx-param-sort"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">sort</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Gets a list of data items retrieved by a given filter and sorted according to sort parameters. <a href="../pip_services3_mongodb/MongoDbPersistence/getListByFilterEx.html">[...]</a>
+                  
+</dd>
+        <dt id="getOneRandom" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/getOneRandom.html">getOneRandom</a></span><span class="signature">(<wbr><span class="parameter" id="getOneRandom-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="getOneRandom-param-filter"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Gets a random item from items that match to a given filter. <a href="../pip_services3_mongodb/MongoDbPersistence/getOneRandom.html">[...]</a>
+                  
+</dd>
+        <dt id="getPageByFilterEx" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/getPageByFilterEx.html">getPageByFilterEx</a></span><span class="signature">(<wbr><span class="parameter" id="getPageByFilterEx-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="getPageByFilterEx-param-filter"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">filter</span>, </span><span class="parameter" id="getPageByFilterEx-param-paging"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/PagingParams-class.html">PagingParams</a></span> <span class="parameter-name">paging</span>, </span><span class="parameter" id="getPageByFilterEx-param-sort"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">sort</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/DataPage-class.html">DataPage</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd>
+          Gets a page of data items retrieved by a given filter and sorted according to sort parameters. <a href="../pip_services3_mongodb/MongoDbPersistence/getPageByFilterEx.html">[...]</a>
+                  
+</dd>
+        <dt id="isOpen" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/isOpen.html">isOpen</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/bool-class.html">bool</a></span>
+          </span>
+                  </dt>
+        <dd>
+          Checks if the component is opened. <a href="../pip_services3_mongodb/MongoDbPersistence/isOpen.html">[...]</a>
+                  <div class="features">override</div>
+</dd>
+        <dt id="noSuchMethod" class="callable inherited">
+          <span class="name"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Invoked when a non-existent method or property is accessed. <a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/noSuchMethod.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="open" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/open.html">open</a></span><span class="signature">(<wbr><span class="parameter" id="open-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a></span>
+          </span>
+                  </dt>
+        <dd>
+          Opens the component. <a href="../pip_services3_mongodb/MongoDbPersistence/open.html">[...]</a>
+                  <div class="features">override</div>
+</dd>
+        <dt id="setReferences" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/setReferences.html">setReferences</a></span><span class="signature">(<wbr><span class="parameter" id="setReferences-param-references"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/IReferences-class.html">IReferences</a></span> <span class="parameter-name">references</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Sets references to dependent components. <a href="../pip_services3_mongodb/MongoDbPersistence/setReferences.html">[...]</a>
+                  <div class="features">override</div>
+</dd>
+        <dt id="toString" class="callable inherited">
+          <span class="name"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Returns a string representation of this object. 
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="unsetReferences" class="callable">
+          <span class="name"><a href="../pip_services3_mongodb/MongoDbPersistence/unsetReferences.html">unsetReferences</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd>
+          Unsets (clears) previously set references to dependent components. 
+                  <div class="features">override</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor inherited" id="operators">
+      <h2>Operators</h2>
+      <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+          <span class="name"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/bool-class.html">bool</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          The equality operator. <a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/operator_equals.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <ol>
+    
+      <li class="section-title"><a href="../pip_services3_mongodb/MongoDbPersistence-class.html#constructors">Constructors</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/MongoDbPersistence.html">MongoDbPersistence</a></li>
+    
+      <li class="section-title">
+        <a href="../pip_services3_mongodb/MongoDbPersistence-class.html#instance-properties">Properties</a>
+      </li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/client.html">client</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/collection.html">collection</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/collectionName.html">collectionName</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/connection.html">connection</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/databaseName.html">databaseName</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/dependencyResolver.html">dependencyResolver</a></li>
+      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/hashCode.html">hashCode</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/logger.html">logger</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/maxPageSize.html">maxPageSize</a></li>
+      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    
+      <li class="section-title"><a href="../pip_services3_mongodb/MongoDbPersistence-class.html#instance-methods">Methods</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/clear.html">clear</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/close.html">close</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/configure.html">configure</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublic.html">convertFromPublic</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/convertFromPublicPartial.html">convertFromPublicPartial</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/convertToPublic.html">convertToPublic</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/create.html">create</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/deleteByFilterEx.html">deleteByFilterEx</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/ensureIndex.html">ensureIndex</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/getCountByFilterEx.html">getCountByFilterEx</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/getListByFilterEx.html">getListByFilterEx</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/getOneRandom.html">getOneRandom</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/getPageByFilterEx.html">getPageByFilterEx</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/isOpen.html">isOpen</a></li>
+      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/open.html">open</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/setReferences.html">setReferences</a></li>
+      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/toString.html">toString</a></li>
+      <li><a href="../pip_services3_mongodb/MongoDbPersistence/unsetReferences.html">unsetReferences</a></li>
+    
+      <li class="section-title inherited"><a href="../pip_services3_mongodb/MongoDbPersistence-class.html#operators">Operators</a></li>
+      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/operator_equals.html">operator ==</a></li>
+    
+    
+    
+    
+    </ol>
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    pip_services3_mongodb
+      1.0.5
+  </span>
+
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../static-assets/typeahead.bundle.min.js"></script>
+<script src="../static-assets/highlight.pack.js"></script>
+<script src="../static-assets/URI.js"></script>
+<script src="../static-assets/script.js"></script>
+
+
+</body>
+
+</html>
