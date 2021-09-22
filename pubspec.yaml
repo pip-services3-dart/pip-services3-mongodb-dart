@@ -8,12 +8,12 @@ environment:
   sdk: ">=2.0.0 <3.0.0"
 
 dependencies:
-  pip_services3_commons: ">=1.0.4 <2.0.0"
-  pip_services3_components: ">=1.0.2 <2.0.0"
-  pip_services3_data: ">=1.0.0 <2.0.0"
-  mongo_dart: "^0.4.0"
-  mongo_dart_query: "^0.4.1"
+  pip_services3_commons: ^1.1.2
+  pip_services3_components: ^1.1.1
+  pip_services3_data: ^1.1.0
+  mongo_dart: ^0.7.2
+  mongo_dart_query: ^1.0.2
 
  
 dev_dependencies:
-  test: '>=1.14.2 <2.0.0'
+  test: ^1.17.12
