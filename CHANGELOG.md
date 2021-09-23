@@ -23,3 +23,7 @@
 ## 1.0.5
 
 - Moved some CRUD operations from IdentifiableMongoDbPersistence to MongoDbPersistence
+
+## 1.1.0
+
+- Add null-safety

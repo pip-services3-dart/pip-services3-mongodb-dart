@@ -53,7 +53,7 @@ import './MongoDbIndex.dart';
 ///
 ///       MyMongoDbPersistence():base('mydata');
 ///
-///       Future<MyData> getByName(String correlationId, String name) {
+///       Future<MyData> getByName(String? correlationId, String name) {
 ///           var filter = {'name': name};
 ///           var query = mngquery.SelectorBuilder();
 ///           var selector = <String, dynamic>{};
@@ -125,10 +125,10 @@ class MongoDbPersistence<T>
     'options.debug', true
   ]);
 
-  ConfigParams _config;
-  IReferences _references;
+  ConfigParams? _config;
+  IReferences? _references;
   bool _opened = false;
-  bool _localConnection;
+  bool? _localConnection;
   final _indexes = <MongoDbIndex>[];
   var maxPageSize = 100;
 
@@ -140,27 +140,27 @@ class MongoDbPersistence<T>
   var logger = CompositeLogger();
 
   /// The MongoDB connection component.
-  MongoDbConnection connection;
+  MongoDbConnection? connection;
 
   /// The MongoDB connection object.
-  mongo.Db client;
+  mongo.Db? client;
 
   /// The MongoDB database name.
-  String databaseName;
+  String? databaseName;
 
   /// The MongoDB colleciton object.
-  String collectionName;
+  String? collectionName;
 
   /// The MongoDb database object.
   //protected _db: any;
 
   /// The MongoDb collection object.
-  mongo.DbCollection collection;
+  mongo.DbCollection? collection;
 
   /// Creates a new instance of the persistence component.
   ///
   /// - [collection]    (optional) a collection name.
-  MongoDbPersistence([String collection]) {
+  MongoDbPersistence([String? collection]) {
     collectionName = collection;
   }
 
@@ -173,7 +173,7 @@ class MongoDbPersistence<T>
     _config = config;
     dependencyResolver.configure(config);
     collectionName =
-        config.getAsStringWithDefault('collection', collectionName);
+        config.getAsStringWithDefault('collection', collectionName ?? '');
   }
 
   /// Sets references to dependent components.
@@ -206,11 +206,11 @@ class MongoDbPersistence<T>
     var connection = MongoDbConnection();
 
     if (_config != null) {
-      connection.configure(_config);
+      connection.configure(_config!);
     }
 
     if (_references != null) {
-      connection.setReferences(_references);
+      connection.setReferences(_references!);
     }
 
     return connection;
@@ -220,16 +220,16 @@ class MongoDbPersistence<T>
   /// - [keys] index keys (fields)
   /// - [options] index options
   void ensureIndex(keys,
-      {String key,
+      {String key = '',
       bool unique = false,
       bool sparse = false,
       bool background = false,
       bool dropDups = false,
-      Map<String, dynamic> partialFilterExpression,
-      String name}) {
+      Map<String, dynamic>? partialFilterExpression,
+      String name = ''}) {
     if (keys == null) return;
     _indexes.add(MongoDbIndex(keys, key, unique, sparse, background, dropDups,
-        partialFilterExpression, name));
+        partialFilterExpression ?? <String, dynamic>{}, name));
   }
 
   /// Checks if the component is opened.
@@ -245,7 +245,7 @@ class MongoDbPersistence<T>
   /// - correlationId 	(optional) transaction id to trace execution through call chain.
   /// Return 			Future that receives error or null no errors occured.
   @override
-  Future open(String correlationId) async {
+  Future open(String? correlationId) async {
     if (_opened) {
       return null;
     }
@@ -255,30 +255,27 @@ class MongoDbPersistence<T>
       _localConnection = true;
     }
 
-    if (_localConnection) {
-      try {
-        await connection.open(correlationId);
-      } catch (err) {
-        if (err == null && connection == null) {
-          throw InvalidStateException(correlationId, 'NOconnection',
-                  'MongoDB connection is missing')
-              .withCause(err);
-        }
-      }
+    if (_localConnection == true) {
+      await connection!.open(correlationId);
     }
 
-    if (!connection.isOpen()) {
+    if (connection == null) {
+      throw InvalidStateException(
+          correlationId, 'NO_CONNECTION', 'MongoDB connection is missing');
+    }
+
+    if (!connection!.isOpen()) {
       throw ConnectionException(
           correlationId, 'CONNECT_FAILED', 'MongoDB connection is not opened');
     }
 
     _opened = false;
 
-    client = connection.getConnection();
-    databaseName = connection.getDatabaseName();
+    client = connection!.getConnection();
+    databaseName = connection!.getDatabaseName();
     mongo.DbCollection coll;
     try {
-      coll = await client.collection(collectionName);
+      coll = client!.collection(collectionName!);
     } catch (err) {
       client = null;
 
@@ -324,7 +321,7 @@ class MongoDbPersistence<T>
   /// - [correlationId] 	(optional) transaction id to trace execution through call chain.
   /// Return 			Future that receives error or null no errors occured.
   @override
-  Future close(String correlationId) async {
+  Future close(String? correlationId) async {
     if (!_opened) {
       return null;
     }
@@ -334,8 +331,8 @@ class MongoDbPersistence<T>
           correlationId, 'NOconnection', 'MongoDb connection is missing');
     }
 
-    if (_localConnection) {
-      await connection.close(correlationId);
+    if (_localConnection == true) {
+      await connection!.close(correlationId);
     }
     _opened = false;
     client = null;
@@ -348,14 +345,14 @@ class MongoDbPersistence<T>
   /// Return 			Future that receives error or null no errors occured.
 
   @override
-  Future clear(String correlationId) async {
+  Future clear(String? correlationId) async {
     // Return error if collection is not set
     if (collectionName == null) {
       throw Exception('Collection name is not defined');
     }
 
     try {
-      await collection.remove(<String, String>{});
+      await collection!.remove(<String, String>{});
     } catch (err) {
       throw ConnectionException(
               correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')
@@ -367,7 +364,7 @@ class MongoDbPersistence<T>
   ///
   /// - [item]    an Map object from MongoDB to convert.
   /// Returns     new created object of type [T] in public format.
-  dynamic convertToPublic(Map<String, dynamic> item) {
+  dynamic convertToPublic(Map<String, dynamic>? item) {
     if (item != null) {
       if (item['_id'] != null) {
         item['id'] = item['_id'];
@@ -383,7 +380,7 @@ class MongoDbPersistence<T>
   ///
   /// - [item]     an object of type [T] in public format to convert.
   /// Returns      converted Map in internal format for MongoDB.
-  Map<String, dynamic> convertFromPublic(dynamic item,
+  Map<String, dynamic>? convertFromPublic(dynamic item,
       {bool createUid = false}) {
     if (item != null) {
       // var jsonMap = item.toJson();
@@ -406,7 +403,7 @@ class MongoDbPersistence<T>
   ///
   /// - [value]     the object to convert from the public partial format.
   /// Returns the initial object.
-  Map<String, dynamic> convertFromPublicPartial(Map<String, dynamic> item) {
+  Map<String, dynamic>? convertFromPublicPartial(Map<String, dynamic>? item) {
     if (item != null) {
       if (item['id'] != null) {
         item['_id'] = item['_id'] ?? item['id'];
@@ -428,10 +425,10 @@ class MongoDbPersistence<T>
   /// Return                Future that receives a data page.
   /// Throws error
   Future<DataPage<T>> getPageByFilterEx(
-      String correlationId,
-      Map<String, dynamic> filter,
-      PagingParams paging,
-      Map<String, dynamic> sort) async {
+      String? correlationId,
+      Map<String, dynamic>? filter,
+      PagingParams? paging,
+      Map<String, dynamic>? sort) async {
     // Adjust max item count based on configuration
     paging = paging ?? PagingParams();
     var skip = paging.getSkip(-1);
@@ -452,14 +449,14 @@ class MongoDbPersistence<T>
     query.raw(selector);
 
     var items = <T>[];
-    var result = await collection.find(query).toList();
-    for (var item in result) {
+    var result = await collection?.find(query).toList();
+    for (var item in result ?? []) {
       items.add(convertToPublic(item));
     }
     logger.trace(
         correlationId, 'Retrieved %d from %s', [items.length, collectionName]);
     if (pagingEnabled) {
-      var count = await collection.count(selector);
+      var count = await collection?.count(selector) ?? 0;
       return DataPage<T>(items, count);
     } else {
       return DataPage<T>(items, 0);
@@ -476,8 +473,8 @@ class MongoDbPersistence<T>
   /// - [sort]             (optional) sorting JSON object
   /// Return         Future that receives a data list.
   /// Throw error
-  Future<List<T>> getListByFilterEx(String correlationId,
-      Map<String, dynamic> filter, Map<String, dynamic> sort) async {
+  Future<List<T>> getListByFilterEx(String? correlationId,
+      Map<String, dynamic>? filter, Map<String, dynamic>? sort) async {
     // Configure options
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
@@ -491,13 +488,11 @@ class MongoDbPersistence<T>
     query.raw(selector);
     var items = <T>[];
 
-    var results = await collection.find(query).toList();
+    var results = await collection?.find(query).toList() ?? [];
     for (var item in results) {
-      if (item != null) {
-        items.add(convertToPublic(item));
-      }
+      items.add(convertToPublic(item));
     }
-    ;
+
     logger.trace(
         correlationId, 'Retrieved %d from %s', [items.length, collectionName]);
     return items;
@@ -513,8 +508,8 @@ class MongoDbPersistence<T>
   /// Return          (optional) Future that receives null for success.
   /// Throws error
   Future deleteByFilterEx(
-      String correlationId, Map<String, dynamic> filter) async {
-    var result = await collection.remove(filter);
+      String? correlationId, Map<String, dynamic> filter) async {
+    var result = await collection?.remove(filter);
     if (result != null && result['ok'] == 1.0) {
       var count = result['n'] ?? 0;
       logger.trace(
@@ -531,17 +526,17 @@ class MongoDbPersistence<T>
   /// - [filter]            (optional) a filter JSON object
   /// Return                Future that receives a random item
   /// Throws error.
-  Future<T> getOneRandom(
-      String correlationId, Map<String, dynamic> filter) async {
+  Future<T?> getOneRandom(
+      String? correlationId, Map<String, dynamic> filter) async {
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
     selector[r'$query'] = filter;
-    var count = await collection.count(query);
-    var pos = RandomInteger.nextInteger(0, count - 1);
+    var count = await collection?.count(query);
+    var pos = RandomInteger.nextInteger(0, count! - 1);
     query.skip(pos >= 0 ? pos : 0);
     query.limit(1);
     query.raw(selector);
-    var items = await collection.find(query);
+    var items = await collection?.find(query);
     try {
       var item = (items != null) ? await items.single : null;
       return convertToPublic(item);
@@ -560,14 +555,14 @@ class MongoDbPersistence<T>
   /// Return         Future that receives a data list.
   /// Throw error
   Future<int> getCountByFilterEx(
-      String correlationId, Map<String, dynamic> filter) async {
+      String? correlationId, Map<String, dynamic>? filter) async {
     // Configure options
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
     if (filter != null && filter.isNotEmpty) {
       selector[r'$query'] = filter;
     }
-    var count = await collection.count(query);
+    var count = await collection?.count(query) ?? 0;
     logger.trace(correlationId, 'Find %d items in %s', [count, collectionName]);
     return count;
   }
@@ -578,15 +573,15 @@ class MongoDbPersistence<T>
   /// - [item]              an item to be created.
   /// Return                Future that receives created item
   /// Throws error.
-  Future<T> create(String correlationId, T item) async {
+  Future<T?> create(String? correlationId, T? item) async {
     if (item == null) {
       return null;
     }
     var jsonMap = convertFromPublic(item, createUid: false);
-    var result = await collection.insert(jsonMap);
+    var result = jsonMap != null ? await collection?.insert(jsonMap) : null;
     if (result != null && result['ok'] == 1.0) {
       logger.trace(correlationId, 'Created in %s with id = %s',
-          [collectionName, jsonMap['_id']]);
+          [collectionName, jsonMap!['_id']]);
 
       return convertToPublic(jsonMap);
     }

@@ -9,19 +9,19 @@ abstract class IDummyPersistence
         IWriter<Dummy, String>,
         IPartialUpdater<Dummy, String> {
   Future<DataPage<Dummy>> getPageByFilter(
-      String correlationId, FilterParams filter, PagingParams paging);
-  Future<List<Dummy>> getListByIds(String correlationId, List<String> ids);
+      String? correlationId, FilterParams? filter, PagingParams? paging);
+  Future<List<Dummy>> getListByIds(String? correlationId, List<String> ids);
   @override
-  Future<Dummy> getOneById(String correlationId, String id);
+  Future<Dummy?> getOneById(String? correlationId, String id);
   @override
-  Future<Dummy> create(String correlationId, Dummy item);
+  Future<Dummy?> create(String? correlationId, Dummy? item);
   @override
-  Future<Dummy> update(String correlationId, Dummy item);
+  Future<Dummy?> update(String? correlationId, Dummy? item);
   @override
-  Future<Dummy> updatePartially(
-      String correlationId, String id, AnyValueMap data);
+  Future<Dummy?> updatePartially(
+      String? correlationId, String id, AnyValueMap data);
   @override
-  Future<Dummy> deleteById(String correlationId, String id);
-  Future deleteByIds(String correlationId, List<String> id);
-  Future<int> getCountByFilter(String correlationId, FilterParams filter);
+  Future<Dummy?> deleteById(String? correlationId, String? id);
+  Future deleteByIds(String? correlationId, List<String> id);
+  Future<int> getCountByFilter(String? correlationId, FilterParams? filter);
 }

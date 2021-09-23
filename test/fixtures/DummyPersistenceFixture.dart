@@ -8,19 +8,18 @@ class DummyPersistenceFixture {
   final _dummy1 = Dummy.from(null, 'Key 1', 'Content 1');
   final _dummy2 = Dummy.from(null, 'Key 2', 'Content 2');
 
-  IDummyPersistence _persistence;
+  final IDummyPersistence _persistence;
 
-  DummyPersistenceFixture(IDummyPersistence persistence) {
-    _persistence = persistence;
-  }
+  DummyPersistenceFixture(IDummyPersistence persistence)
+      : _persistence = persistence;
 
-  void testCrudOperations() async {
+  Future testCrudOperations() async {
     Dummy dummy1;
     Dummy dummy2;
 
     // Create one dummy
     var result = await _persistence.create(null, _dummy1);
-    dummy1 = result;
+    dummy1 = result!;
     expect(dummy1, isNotNull);
     expect(dummy1.id, isNotNull);
     expect(_dummy1.key, dummy1.key);
@@ -28,7 +27,7 @@ class DummyPersistenceFixture {
 
     // Create another dummy
     result = await _persistence.create(null, _dummy2);
-    dummy2 = result;
+    dummy2 = result!;
     expect(dummy2, isNotNull);
     expect(dummy2.id, isNotNull);
     expect(_dummy2.key, dummy2.key);
@@ -47,7 +46,7 @@ class DummyPersistenceFixture {
     dummy1.content = 'Updated Content 1';
     result = await _persistence.update(null, dummy1);
     expect(result, isNotNull);
-    expect(dummy1.id, result.id);
+    expect(dummy1.id, result!.id);
     expect(dummy1.key, result.key);
     expect(dummy1.content, result.content);
 
@@ -56,7 +55,7 @@ class DummyPersistenceFixture {
         AnyValueMap.fromTuples(['content', 'Partially Updated Content 1']));
 
     expect(result, isNotNull);
-    expect(dummy1.id, result.id);
+    expect(dummy1.id, result!.id);
     expect(dummy1.key, result.key);
     expect('Partially Updated Content 1', result.content);
 
@@ -64,14 +63,14 @@ class DummyPersistenceFixture {
     result = await _persistence.getOneById(null, dummy1.id);
     // Try to get item
     expect(result, isNotNull);
-    expect(dummy1.id, result.id);
+    expect(dummy1.id, result!.id);
     expect(dummy1.key, result.key);
     expect('Partially Updated Content 1', result.content);
 
     // Delete the dummy
     result = await _persistence.deleteById(null, dummy1.id);
     expect(result, isNotNull);
-    expect(dummy1.id, result.id);
+    expect(dummy1.id, result!.id);
     expect(dummy1.key, result.key);
     expect('Partially Updated Content 1', result.content);
 
@@ -81,13 +80,13 @@ class DummyPersistenceFixture {
     expect(result, isNull);
   }
 
-  void testBatchOperations() async {
+  Future testBatchOperations() async {
     Dummy dummy1;
     Dummy dummy2;
 
     // Create one dummy
     var result = await _persistence.create(null, _dummy1);
-    dummy1 = result;
+    dummy1 = result!;
     expect(dummy1, isNotNull);
     expect(dummy1.id, isNotNull);
     expect(_dummy1.key, dummy1.key);
@@ -95,7 +94,7 @@ class DummyPersistenceFixture {
 
     // Create another dummy
     result = await _persistence.create(null, _dummy2);
-    dummy2 = result;
+    dummy2 = result!;
     expect(dummy2, isNotNull);
     expect(dummy2.id, isNotNull);
     expect(_dummy2.key, dummy2.key);

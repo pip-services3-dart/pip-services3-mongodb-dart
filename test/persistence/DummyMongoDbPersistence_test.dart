@@ -6,12 +6,12 @@ import './DummyMongoDbPersistence.dart';
 
 void main() {
   group('DummyMongoDbPersistence', () {
-    DummyMongoDbPersistence persistence;
-    DummyPersistenceFixture fixture;
+    late DummyMongoDbPersistence persistence;
+    late DummyPersistenceFixture fixture;
 
-    var mongoUri = Platform.environment['MONGO_URI'];
-    var mongoHost = Platform.environment['MONGO_HOST'] ?? 'localhost';
-    var mongoPort = Platform.environment['MONGO_PORT'] ?? '27017';
+    var mongoUri = Platform.environment['MONGO_SERVICE_URI'];
+    var mongoHost = Platform.environment['MONGO_SERVICE_HOST'] ?? 'localhost';
+    var mongoPort = Platform.environment['MONGO_SERVICE_PORT'] ?? '27017';
     var mongoDatabase = Platform.environment['MONGO_DB'] ?? 'test';
     if (mongoUri == null && mongoHost == null) {
       return;

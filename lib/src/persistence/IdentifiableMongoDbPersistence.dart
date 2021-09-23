@@ -64,7 +64,7 @@ import 'package:mongo_dart_query/mongo_dart_query.dart' as mngquery;
 ///         return criteria.isNotNul ? {r'$and': criteria } : null;
 ///     }
 ///
-///     Future<DataPage<MyData>> getPageByFilter(String correlationId, FilterParams filter, PagingParams paging) async {
+///     Future<DataPage<MyData>> getPageByFilter(String? correlationId, FilterParams filter, PagingParams paging) async {
 ///         return base.getPageByFilter(correlationId, _composeFilter(filter), paging, null);
 ///     }
 ///
@@ -91,7 +91,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// Creates a new instance of the persistence component.
   ///
   /// - [collection]    (optional) a collection name.
-  IdentifiableMongoDbPersistence(String collection) : super(collection) {
+  IdentifiableMongoDbPersistence(String? collection) : super(collection) {
     if (collection == null) {
       throw Exception('Collection name could not be null');
     }
@@ -113,7 +113,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [ids]               ids of data items to be retrieved
   /// Return         Future that receives a data list
   /// Throws error.
-  Future<List<T>> getListByIds(String correlationId, List<K> ids) async {
+  Future<List<T>> getListByIds(String? correlationId, List<K> ids) async {
     var filter = {
       '_id': {r'$in': ids}
     };
@@ -127,13 +127,13 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// Return          Future that receives data item
   /// Throws error.
   @override
-  Future<T> getOneById(String correlationId, K id) async {
+  Future<T?> getOneById(String? correlationId, K? id) async {
     var filter = {'_id': id};
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
     selector[r'$query'] = filter;
     query.raw(selector);
-    var item = await collection.findOne(filter);
+    var item = await collection?.findOne(filter);
     if (item == null) {
       logger.trace(correlationId, 'Nothing found from %s with id = %s',
           [collectionName, id]);
@@ -152,15 +152,15 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// Return                Future that receives created item
   /// Throws error.
   @override
-  Future<T> create(String correlationId, T item) async {
+  Future<T?> create(String? correlationId, T? item) async {
     if (item == null) {
       return null;
     }
     var jsonMap = convertFromPublic(item, createUid: true);
-    var result = await collection.insert(jsonMap);
+    var result = jsonMap != null ? await collection?.insert(jsonMap) : null;
     if (result != null && result['ok'] == 1.0) {
       logger.trace(correlationId, 'Created in %s with id = %s',
-          [collectionName, jsonMap['_id']]);
+          [collectionName, jsonMap!['_id']]);
 
       return convertToPublic(jsonMap);
     }
@@ -175,13 +175,13 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// Return                Future that receives updated item
   /// Throws error.
   @override
-  Future<T> set(String correlationId, T item) async {
+  Future<T?> set(String? correlationId, T? item) async {
     if (item == null) {
       return null;
     }
     var jsonMap = convertFromPublic(item, createUid: true);
-    var filter = {'_id': jsonMap['_id']};
-    var result = await collection.findAndModify(
+    var filter = {'_id': jsonMap?['_id']};
+    var result = await collection?.findAndModify(
         query: filter, update: jsonMap, returnNew: true, upsert: true);
     if (result != null) {
       logger.trace(
@@ -198,16 +198,16 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// Return                Future that receives updated item
   /// Throws error.
   @override
-  Future<T> update(String correlationId, T item) async {
+  Future<T?> update(String? correlationId, T? item) async {
     if (item == null || item.id == null) {
       return null;
     }
 
     var jsonMap = convertFromPublic(item, createUid: false);
-    jsonMap.remove('_id');
+    jsonMap?.remove('_id');
     var filter = {'_id': item.id};
     var update = {r'$set': jsonMap};
-    var result = await collection.findAndModify(
+    var result = await collection?.findAndModify(
         query: filter, update: update, returnNew: true, upsert: false);
 
     if (result != null) {
@@ -226,17 +226,18 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [data]              a map with fields to be updated.
   /// Return                Future that receives updated item
   /// Throws error.
-  Future<T> updatePartially(
-      String correlationId, K id, AnyValueMap data) async {
+  Future<T?> updatePartially(
+      String? correlationId, K? id, AnyValueMap? data) async {
     if (data == null || id == null) {
       return null;
     }
 
     var newItem = data.innerValue();
-    newItem = convertFromPublicPartial(newItem);
+    newItem = convertFromPublicPartial(
+        newItem != null ? Map<String, dynamic>.from(newItem) : null);
     var filter = {'_id': id};
     var update = {r'$set': newItem};
-    var result = await collection.update(filter, update);
+    var result = await collection?.update(filter, update);
     if (result != null && result['ok'] == 1.0) {
       logger.trace(correlationId, 'Updated partially in %s with id = %s',
           [collectionName, id]);
@@ -253,11 +254,11 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// Return                Future that receives deleted item
   /// Thhrows error.
   @override
-  Future<T> deleteById(String correlationId, K id) async {
+  Future<T?> deleteById(String? correlationId, K? id) async {
     var filter = {'_id': id};
 
     var oldItem = await getOneById(correlationId, id);
-    var result = await collection.remove(filter);
+    var result = await collection?.remove(filter);
     if (result != null && result['ok'] == 1.0) {
       logger.trace(
           correlationId, 'Deleted from %s with id = %s', [collectionName, id]);
@@ -273,7 +274,7 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
   /// - [ids]               ids of data items to be deleted.
   /// Return                Future that receives null for success.
   /// Throws error
-  Future deleteByIds(String correlationId, List<K> ids) async {
+  Future deleteByIds(String? correlationId, List<K> ids) async {
     var filter = {
       '_id': {r'$in': ids}
     };

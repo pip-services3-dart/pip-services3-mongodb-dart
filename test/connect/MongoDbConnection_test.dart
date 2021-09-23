@@ -5,11 +5,11 @@ import 'package:pip_services3_mongodb/pip_services3_mongodb.dart';
 
 void main() {
   group('MongoDbConnection', () {
-    MongoDbConnection connection;
+    late MongoDbConnection connection;
 
-    var mongoUri = Platform.environment['MONGO_URI'];
-    var mongoHost = Platform.environment['MONGO_HOST'] ?? 'localhost';
-    var mongoPort = Platform.environment['MONGO_PORT'] ?? '27017';
+    var mongoUri = Platform.environment['MONGO_SERVICE_URI'];
+    var mongoHost = Platform.environment['MONGO_SERVICE_HOST'] ?? 'localhost';
+    var mongoPort = Platform.environment['MONGO_SERVICE_PORT'] ?? '27017';
     var mongoDatabase = Platform.environment['MONGO_DB'] ?? 'test';
     if (mongoUri == null && mongoHost == null) {
       return;

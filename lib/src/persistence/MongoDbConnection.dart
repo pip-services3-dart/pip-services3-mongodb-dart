@@ -65,10 +65,10 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
   var options = ConfigParams();
 
   /// The MongoDB database name.
-  String databaseName;
+  String? databaseName;
 
   /// The MongoDb database object.
-  mongo.Db connection;
+  mongo.Db? connection;
 
   /// Creates a new instance of the connection component.
   MongoDbConnection();
@@ -154,8 +154,8 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
   /// Returns 			      Future that receives null no errors occured.
   /// Throws error
   @override
-  Future open(String correlationId) async {
-    String uri;
+  Future open(String? correlationId) async {
+    String? uri;
     try {
       uri = await connectionResolver.resolve(correlationId);
     } catch (err) {
@@ -171,14 +171,14 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
       settings['useNewUrlParser'] = true;
       settings['useUnifiedTopology'] = true;
 
-      connection = mongo.Db(uri);
-      await connection.open();
+      connection = mongo.Db(uri ?? '');
+      await connection!.open();
       if (settings['username'] != null) {
-        await connection.authenticate(
-            settings['username'], settings['password']);
+        await connection!
+            .authenticate(settings['username'], settings['password']);
       }
 
-      databaseName = connection.databaseName;
+      databaseName = connection?.databaseName;
     } catch (ex) {
       throw ConnectionException(
               correlationId, 'CONNECT_FAILED', 'Connection to mongodb failed')
@@ -192,12 +192,12 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
   /// Return 			      Future that receives null no errors occured.
   /// Throws error
   @override
-  Future close(String correlationId) async {
+  Future close(String? correlationId) async {
     if (connection == null) {
       return null;
     }
     try {
-      await connection.close();
+      await connection!.close();
       connection = null;
       databaseName = null;
       logger.debug(correlationId, 'Disconnected from mongodb database %s',
@@ -215,7 +215,7 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
   }
 
   // Return used database name
-  String getDatabaseName() {
+  String? getDatabaseName() {
     return databaseName;
   }
 }

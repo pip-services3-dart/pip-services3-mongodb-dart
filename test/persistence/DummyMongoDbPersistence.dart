@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 
 import 'package:pip_services3_mongodb/pip_services3_mongodb.dart';
@@ -15,7 +14,7 @@ class DummyMongoDbPersistence
 
   @override
   Future<DataPage<Dummy>> getPageByFilter(
-      String correlationId, FilterParams filter, PagingParams paging) async {
+      String? correlationId, FilterParams? filter, PagingParams? paging) async {
     filter = filter ?? FilterParams();
     var key = filter.getAsNullableString('key');
 
@@ -30,7 +29,7 @@ class DummyMongoDbPersistence
 
   @override
   Future<int> getCountByFilter(
-      String correlationId, FilterParams filter) async {
+      String? correlationId, FilterParams? filter) async {
     filter = filter ?? FilterParams();
     var key = filter.getAsNullableString('key');
 

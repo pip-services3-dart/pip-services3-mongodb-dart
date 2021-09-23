@@ -1,16 +1,16 @@
 name: pip_services3_mongodb
-version: 1.0.5
+version: 1.1.0
 author: Sergey Seroukhov <seroukhov@gmail.com>
 description: This framework is part of the [Pip.Services](https://github.com/pip-services/pip-services) project. It contains the following MongoDB components.
 homepage: https://github.com/pip-services3-dart/pip-services3-messaging-dart
 
 environment:
-  sdk: ">=2.0.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   pip_services3_commons: ^1.1.2
   pip_services3_components: ^1.1.1
-  pip_services3_data: ^1.1.0
+  pip_services3_data: ^1.1.1
   mongo_dart: ^0.7.2
   mongo_dart_query: ^1.0.2
 

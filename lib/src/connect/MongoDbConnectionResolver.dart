@@ -52,7 +52,7 @@ class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
   }
 
   dynamic _validateConnection(
-      String correlationId, ConnectionParams connection) {
+      String? correlationId, ConnectionParams connection) {
     var uri = connection.getUri();
     if (uri != null) return null;
 
@@ -78,7 +78,7 @@ class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
   }
 
   dynamic _validateConnections(
-      String correlationId, List<ConnectionParams> connections) {
+      String? correlationId, List<ConnectionParams>? connections) {
     if (connections == null || connections.isEmpty) {
       return ConfigException(
           correlationId, 'NO_CONNECTION', 'Database connection is not set');
@@ -93,7 +93,7 @@ class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
   }
 
   String _composeUri(
-      List<ConnectionParams> connections, CredentialParams credential) {
+      List<ConnectionParams> connections, CredentialParams? credential) {
     // If there is a uri then return it immediately
     for (var connection in connections) {
       var uri = connection.getUri();
@@ -109,7 +109,7 @@ class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
       if (hosts.isNotEmpty) {
         hosts += ',';
       }
-      hosts += host + (port == null ? '' : ':' + port.toString());
+      hosts += (host ?? '') + (port == null ? '' : ':' + port.toString());
     }
 
     // Define database
@@ -136,7 +136,8 @@ class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
     }
 
     // Define additional parameters parameters
-    var options = ConfigParams.mergeConfigs(connections).override(credential);
+    var options = ConfigParams.mergeConfigs(connections)
+        .override(credential ?? CredentialParams());
     options.remove('uri');
     options.remove('host');
     options.remove('port');
@@ -152,7 +153,7 @@ class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
 
       params += key;
 
-      var value = options.getAsString(key);
+      var value = options.getAsNullableString(key);
       if (value != null) {
         params += '=' + value;
       }
@@ -172,9 +173,9 @@ class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// Return 			Future that receives resolved URI
   /// Throw error.
-  Future<String> resolve(String correlationId) async {
-    List<ConnectionParams> connections;
-    CredentialParams credential;
+  Future<String> resolve(String? correlationId) async {
+    var connections = <ConnectionParams>[];
+    CredentialParams? credential;
 
     Future<dynamic> Function() resolv = () async {
       connections = await connectionResolver.resolveAll(correlationId);
