@@ -2,11 +2,11 @@ import 'package:pip_services3_commons/pip_services3_commons.dart';
 
 class Dummy implements IStringIdentifiable, ICloneable {
   @override
-  String id;
+  String? id;
   String? key;
   String? content;
 
-  Dummy() : id = IdGenerator.nextLong();
+  Dummy();
 
   Dummy.from(String? id, this.key, this.content) : id = IdGenerator.nextLong();
 
