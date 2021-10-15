@@ -4,18 +4,23 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="generator" content="made with love by dartdoc 0.32.4">
+  <meta name="generator" content="made with love by dartdoc 2.0.0">
   <meta name="description" content="pip_services3_mongodb API docs, for the Dart programming language.">
   <title>pip_services3_mongodb - Dart API docs</title>
 
-  
-  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="static-assets/github.css">
-  <link rel="stylesheet" href="static-assets/styles.css">
-  <link rel="icon" href="static-assets/favicon.png">
 
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
 </head>
+
 
 <body data-base-href=""
       data-using-base-href="false">
@@ -35,34 +40,17 @@
 
 <main>
 
-  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
-    <header id="header-search-sidebar" class="hidden-l">
-      <form class="search-sidebar" role="search">
-        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
-      </form>
-    </header>
-    
-    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
-      <li><a href="https://github.com/pip-services3-dart/pip-services3-messaging-dart">pip_services3_mongodb package</a></li>
-    </ol>
-    
-    <h5 class="hidden-xs"><span class="package-name">pip_services3_mongodb</span> <span class="package-kind">package</span></h5>
-    <ol>
-          <li class="section-title">Libraries</li>
-          <li><a href="pip_services3_mongodb/pip_services3_mongodb-library.html">pip_services3_mongodb</a></li>
-    </ol>
-  </div>
 
-  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <section class="desc markdown">
-        <h1 id="img-srchttpsuploads-sslwebflowcom5ea5d3315186cf5ec60c3ee45edf1c94ce4c859f2b188094_logosvg-altpipservices-logo-width200-br-mongodb-components-for-dart"><img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> &lt;br/&gt; MongoDB components for Dart</h1>
-<p>This module is a part of the <a href="http://pipservices.org">Pip.Services</a> polyglot microservices toolkit.</p>
-<p>The MongoDB module simplifies how we work with Mongo databases and contains everything you need to start working with MongoDB.</p>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="img-srchttpsuploads-sslwebflowcom5ea5d3315186cf5ec60c3ee45edf1c94ce4c859f2b188094_logosvg-altpipservices-logo-width200-br-mongodb-components-for-dart"><img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> &lt;br/&gt; MongoDB components for Dart</h1>
+<p>This module is a part of the <a href="http://pipservices.org">Pip.Services</a> polyglot microservices toolkit. It provides a set of components to implement MongoDB persistence.</p>
 <p>The module contains the following packages:</p>
 <ul>
-<li><strong>Build</strong> - contains a factory for creating MongoDB persistence components.</li>
-<li><strong>Connect</strong> - instruments for configuring connections to the database. The component receives a set of configuration parameters and uses them to generate all necessary database connection parameters.</li>
-<li><strong>Persistence</strong> - abstract classes for working with the database that can be used for connecting to collections and performing basic CRUD operations.</li>
+<li><strong>Build</strong> - Factory to create MongoDB persistence components.</li>
+<li><strong>Connect</strong> - Connection component to configure MongoDB connection to database.</li>
+<li><strong>Persistence</strong> - abstract persistence components to perform basic CRUD operations.</li>
 </ul>
 <p><a name="links"></a> Quick links:</p>
 <ul>
@@ -164,7 +152,6 @@ class MyMongoDbPersistence extends IdentifiableMongoDbPersistence {
 <pre class="language-yaml"><code class="language-yaml">...
 {{#if MONGODB_ENABLED}}
 - descriptor: pip-services:connection:mongodb:con1:1.0
-  collection: {{MONGO_COLLECTION}}{{#unless MONGO_COLLECTION}}myobjects{{/unless}}
   connection:
     uri: {{{MONGO_SERVICE_URI}}}
     host: {{{MONGO_SERVICE_HOST}}}{{#unless MONGO_SERVICE_HOST}}localhost{{/unless}}
@@ -177,6 +164,7 @@ class MyMongoDbPersistence extends IdentifiableMongoDbPersistence {
 - descriptor: myservice:persistence:mongodb:default:1.0
   dependencies:
     connection: pip-services:connection:mongodb:con1:1.0
+  collection: {{MONGO_COLLECTION}}{{#unless MONGO_COLLECTION}}myobjects{{/unless}}
 {{/if}}
 ...
 </code></pre>
@@ -202,33 +190,55 @@ class MyMongoDbPersistence extends IdentifiableMongoDbPersistence {
 ./clear.ps1
 </code></pre>
 <h2 id="contacts">Contacts</h2>
-<p>The library is created and maintained by </p>
+<p>The library is created and maintained by</p>
 <ul>
 <li><strong>Sergey Seroukhov</strong></li>
 <li><strong>Levichev Dmitry</strong>.</li>
 </ul>
-<p>The documentation is written by </p>
+<p>The documentation is written by</p>
 <ul>
 <li><strong>Mark Makarychev</strong></li>
 <li><strong>Levichev Dmitry</strong>.</li>
 </ul>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="pip_services3_mongodb">
+  <span class="name"><a href="pip_services3_mongodb/pip_services3_mongodb-library.html">pip_services3_mongodb</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+        </dl>
       </section>
-      
-        <section class="summary">
-            <h2>Libraries</h2>
-          <dl>
-            <dt id="pip_services3_mongodb">
-              <span class="name"><a href="pip_services3_mongodb/pip_services3_mongodb-library.html">pip_services3_mongodb</a></span>             
-            </dt>
-            <dd>
-               
-            </dd>
-          </dl>
-        </section>
 
   </div> <!-- /.main-content -->
 
-  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="https://github.com/pip-services3-dart/pip-services3-messaging-dart">pip_services3_mongodb package</a></li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">pip_services3_mongodb</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="pip_services3_mongodb/pip_services3_mongodb-library.html">pip_services3_mongodb</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div>
 
 </main>
@@ -236,18 +246,20 @@ class MyMongoDbPersistence extends IdentifiableMongoDbPersistence {
 <footer>
   <span class="no-break">
     pip_services3_mongodb
-      1.0.5
+      1.1.0
   </span>
 
+  
 </footer>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="static-assets/typeahead.bundle.min.js"></script>
-<script src="static-assets/highlight.pack.js"></script>
-<script src="static-assets/URI.js"></script>
-<script src="static-assets/script.js"></script>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/script.js?v1"></script>
+
 
 
 </body>
 
 </html>
+
