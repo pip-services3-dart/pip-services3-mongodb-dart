@@ -27,3 +27,7 @@
 ## 1.1.0
 
 - Add null-safety
+
+## 1.1.1
+
+- Fixed set method for custom ids

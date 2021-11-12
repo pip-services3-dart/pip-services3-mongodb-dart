@@ -132,8 +132,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
     selector[r'$query'] = filter;
-    query.raw(selector);
-    var item = await collection?.findOne(filter);
+
+    var item = await collection?.findOne(query.raw(selector));
     if (item == null) {
       logger.trace(correlationId, 'Nothing found from %s with id = %s',
           [collectionName, id]);
@@ -180,14 +180,23 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
       return null;
     }
     var jsonMap = convertFromPublic(item, createUid: true);
-    var filter = {'_id': jsonMap?['_id']};
-    var result = await collection?.findAndModify(
-        query: filter, update: jsonMap, returnNew: true, upsert: true);
-    if (result != null) {
+    var query = {'_id': item.id};
+    var update = {r'$set': jsonMap};
+
+    // Bug with ObjectId when returnNew true
+    // var result = await collection?.findAndModify(
+    //     query: query, update: update, returnNew: true, upsert: true);
+
+    var result = await collection?.updateOne(query, update, upsert: true);
+
+    if (result != null && result.ok == 1.0) {
       logger.trace(
           correlationId, 'Set in %s with id = %s', [collectionName, item.id]);
-      return convertToPublic(result);
+      return item; // convertToPublic(result);
     }
+    // if (result != null) {
+
+    // }
     return null;
   }
 
