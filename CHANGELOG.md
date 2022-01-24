@@ -31,3 +31,7 @@
 ## 1.1.1
 
 - Fixed set method for custom ids
+
+## 1.1.2
+
+- Fixed getOneRandom query

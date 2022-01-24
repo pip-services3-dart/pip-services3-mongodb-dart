@@ -526,7 +526,7 @@ class MongoDbPersistence<T>
   /// - [filter]            (optional) a filter JSON object
   /// Return                Future that receives a random item
   /// Throws error.
-  Future<T?> getOneRandom(
+  Future<T?> getOneRandomEx(
       String? correlationId, Map<String, dynamic> filter) async {
     var query = mngquery.SelectorBuilder();
     var selector = <String, dynamic>{};
@@ -535,10 +535,10 @@ class MongoDbPersistence<T>
     var pos = RandomInteger.nextInteger(0, count! - 1);
     query.skip(pos >= 0 ? pos : 0);
     query.limit(1);
-    query.raw(selector);
-    var items = await collection?.find(query);
+
+    var items = collection?.find(query.raw(selector));
     try {
-      var item = (items != null) ? await items.single : null;
+      var item = (items != null) ? await items.first : null;
       return convertToPublic(item);
     } catch (ex) {
       return null;
