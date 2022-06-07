@@ -1,6 +1,6 @@
 {
-    "name": "pip-services-mongodb",
-    "registry": "pipdevs",
+    "name": "pip_services3_mongodb",
+    "registry": "github.com/pip-services3-dart",
     "version": "1.1.2",
     "build": "0"
 }
