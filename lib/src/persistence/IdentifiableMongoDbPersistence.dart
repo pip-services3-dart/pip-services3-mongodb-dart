@@ -157,8 +157,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
       return null;
     }
     var jsonMap = convertFromPublic(item, createUid: true);
-    var result = jsonMap != null ? await collection?.insert(jsonMap) : null;
-    if (result != null && result['ok'] == 1.0) {
+    var result = jsonMap != null ? await collection?.insertOne(jsonMap) : null;
+    if (result != null && result.ok == 1.0) {
       logger.trace(correlationId, 'Created in %s with id = %s',
           [collectionName, jsonMap!['_id']]);
 
@@ -246,8 +246,8 @@ class IdentifiableMongoDbPersistence<T extends IIdentifiable<K>, K>
         newItem != null ? Map<String, dynamic>.from(newItem) : null);
     var filter = {'_id': id};
     var update = {r'$set': newItem};
-    var result = await collection?.update(filter, update);
-    if (result != null && result['ok'] == 1.0) {
+    var result = await collection?.updateOne(filter, update);
+    if (result != null && result.ok == 1.0) {
       logger.trace(correlationId, 'Updated partially in %s with id = %s',
           [collectionName, id]);
 
