@@ -35,3 +35,7 @@
 ## 1.1.2
 
 - Fixed getOneRandom query
+
+## 1.1.3
+
+- Fixed mongodb create and update queries
