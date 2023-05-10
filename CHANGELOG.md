@@ -39,3 +39,8 @@
 ## 1.1.3
 
 - Fixed mongodb create and update queries
+
+
+## 1.1.4
+
+- Fixed mongodb crerdentials auth

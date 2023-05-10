@@ -122,18 +122,6 @@ class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
     }
 
     // Define authentication part
-    var auth = '';
-    if (credential != null) {
-      var username = credential.getUsername();
-      if (username != null) {
-        var password = credential.getPassword();
-        if (password != null) {
-          auth = username + ':' + password + '@';
-        } else {
-          auth = username + '@';
-        }
-      }
-    }
 
     // Define additional parameters parameters
     var options = ConfigParams.mergeConfigs(connections)
@@ -163,7 +151,7 @@ class MongoDbConnectionResolver implements IReferenceable, IConfigurable {
     }
 
     // Compose uri
-    var uri = 'mongodb://' + auth + hosts + database + params;
+    var uri = 'mongodb://' + hosts + database + params;
 
     return uri;
   }

@@ -173,6 +173,15 @@ class MongoDbConnection implements IReferenceable, IConfigurable, IOpenable {
 
       connection = mongo.Db(uri ?? '');
       await connection!.open();
+
+      var credential = await connectionResolver.credentialResolver.lookup('');
+      var username = credential?.getUsername();
+      if (username != null) {
+        var password = credential?.getPassword();
+        if (password != null) {
+          await connection!.authenticate(username, password);
+        }
+      }
       if (settings['username'] != null) {
         await connection!
             .authenticate(settings['username'], settings['password']);
